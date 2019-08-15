@@ -2,6 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+ public enum TileType
+{
+    Exit,
+    Wall,
+    Empty,
+   
+};
 
 public class BaseTile : MonoBehaviour {
 

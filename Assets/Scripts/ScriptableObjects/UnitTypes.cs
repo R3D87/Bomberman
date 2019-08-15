@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Empty : BaseTile {
+public class UnitTypes : MonoBehaviour {
 
-	
-    
-    // Use this for initialization
+	// Use this for initialization
 	void Start () {
 		
 	}

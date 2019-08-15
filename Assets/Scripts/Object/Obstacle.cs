@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Obstacle : MonoBehaviour {
+public class Obstacle : BaseObject{
 
 	// Use this for initialization
 	void Start () {

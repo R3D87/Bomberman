@@ -8,8 +8,16 @@ public class ObjectSource : MonoBehaviour {
    public int counter=10;
     public GameObject source;
 
+    public PaintType paintType;
+
     public GameObject Source
     { get; set; }
 
+
+    private void Start()
+    {
+        source.GetComponent<PaintTile>().PaintTileType = paintType;
+ 
+    }
 
 }

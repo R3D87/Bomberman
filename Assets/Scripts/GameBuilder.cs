@@ -23,7 +23,7 @@ public class GameBuilder : MonoBehaviour {
     int heigh = 18;
     int width;
     GameObject[,] Paint;
-    GameObject[,] Board;
+
 
     TileTypes tileTypes;
 
@@ -145,6 +145,10 @@ public class GameBuilder : MonoBehaviour {
 
     }
 
+    public GameObject[,] SendGameBoardBluprint()
+    {
+        return Paint;
+    }
 
     public void AddElemntToPaint(int x, int y, GameObject gameObject)
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Exit : MonoBehaviour {
+public class Exit : BaseTile {
 
 	// Use this for initialization
 	void Start () {

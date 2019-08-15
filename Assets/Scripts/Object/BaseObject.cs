@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Empty : BaseTile {
 
-	
-    
-    // Use this for initialization
+public enum ObjectType
+{
+    Box,
+    Bomb,
+    PowerUp
+
+};
+
+public class BaseObject : MonoBehaviour {
+
+	// Use this for initialization
 	void Start () {
 		
 	}

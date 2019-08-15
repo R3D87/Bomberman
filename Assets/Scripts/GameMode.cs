@@ -5,12 +5,18 @@ using UnityEngine;
 public class GameMode : MonoBehaviour {
 
 
-    public GameBoard gameboard;
-    public GameBuilder gameBuilder;
+    public GameObject gameBoardObject;
+    public GameObject gameBuilderObject;
+    GameBoard gameBoard;
+    GameBuilder gameBuilder;
+    GameObject[,] test;
+    
     // Use this for initialization
 	void Start () {
-		
-	}
+
+        gameBoard = gameBoardObject.GetComponent<GameBoard>();
+        gameBuilder = gameBuilderObject.GetComponent<GameBuilder>();
+    }
 
     bool Validate(GameObject gameObject)
     {
@@ -19,9 +25,14 @@ public class GameMode : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
 
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+             gameBuilder.SendGameBoardBluprint();
+            gameBoard.GetBluplirint(gameBuilder.SendGameBoardBluprint());
         }
 
 	}
