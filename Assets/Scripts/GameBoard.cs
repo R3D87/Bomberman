@@ -5,8 +5,17 @@ using UnityEngine;
 public class GameBoard : MonoBehaviour {
 
 
+  public struct Cell        
+    {
+        public GameObject Tile;
+        public GameObject[] Object;
+        public GameObject[] Unit;
+    };
+
     GameObject[,] gameBoard;
     GameObject[,] blueprintGameboard;
+    public GameObject Player;
+ 
 
     public ObjectTypes[] objectTypes;
     public TileTypes[] tileTypes;
@@ -37,9 +46,66 @@ public class GameBoard : MonoBehaviour {
         Debug.ClearDeveloperConsole();
         gameBoard = new GameObject[width, height];
         StartCoroutine(ShowTileTranslate());
+        StartCoroutine(ShowObjectTranslate());
       
 
 
+    }
+    void SetUpPlayer()
+    {
+        List<int> places = new List<int>();
+        for (int i = 0; i < width * height; i++)
+        {
+            int x = i / width;
+            int y = i % width;
+            if (gameBoard[x, y].GetComponent<Empty>() != null)
+            {
+                places.Add(i);
+                Debug.Log(x+ " "+y);
+                
+            }
+
+        }
+       
+        int rand =  Random.Range(0, places.Count);
+        int idx = places[rand];
+        Vector3 tem_position = gameBoard[idx / width, idx % width].transform.position;
+        tem_position += new Vector3(0, 0, -0.1f);
+        gameBoard[idx / width, idx % width] = Instantiate(Player, tem_position, Quaternion.identity, transform);
+    }
+
+    GameObject Exit;
+    void SetUpExit()
+    {
+        List<int> places = new List<int>();
+        for (int i = 0; i < width * height; i++)
+        {
+            int x = i / width;
+            int y = i % width;
+            if (gameBoard[x, y].GetComponent<Obstacle>() != null)
+            {
+                places.Add(i);
+                Debug.Log("Pfefw"+x + " " + y);
+
+            }
+
+        }
+
+        int rand = Random.Range(0, places.Count);
+        int idx = places[rand];
+        Vector3 tem_position = gameBoard[idx / width, idx % width].transform.position;
+        Destroy(gameBoard[idx / width, idx % width]);
+        tem_position += new Vector3(0, 0, -0.1f);
+       
+        foreach (var item in tileTypes)
+        {
+            if (item.tileType == TileType.Exit)
+            {
+                Exit = item.baseTile;
+            }
+        }
+      
+        gameBoard[idx / width, idx % width] = Instantiate(Exit, tem_position, Quaternion.identity, transform);
     }
     void SetSizeBaseOnBluprint( int tempWidth, int tempHeight)
     {
@@ -58,18 +124,6 @@ public class GameBoard : MonoBehaviour {
                 " Fx: " + blueprintGameboard[x, y].GetComponent<PaintTile>().PositionX +
                 " Fy: " + blueprintGameboard[x, y].GetComponent<PaintTile>().PositionY +
                 " Color: " + blueprintGameboard[x, y].GetComponent<PaintTile>().PaintTileType);
-        }
-    }
-    public void ShowGameBoardData()
-    {
-        for (int i = 0; i < width * height; i++)
-        {
-            int x = i / width;
-            int y = i % width;
-            Debug.Log("x: " + x + " y: " + y +
-                " Fx: " + blueprintGameboard[x, y].GetComponent<PaintTile>().PositionX +
-                " Fy: " + blueprintGameboard[x, y].GetComponent<PaintTile>().PositionY +
-                " Color: " + gameBoard[x, y].GetComponent<PaintTile>().PaintTileType);
         }
     }
 
@@ -99,6 +153,25 @@ public class GameBoard : MonoBehaviour {
                 
             }
             yield return new WaitForSeconds(0.01f);
+            ClearPaint(blueprintGameboard[x, y]);
+
+        }
+       yield return null;
+    }
+   
+
+    
+    IEnumerator ShowObjectTranslate()
+    {
+        for (int i = 0; i < width * height; i++)
+        {
+            int x = i / width;
+            int y = i % width;
+
+            PaintType paint = blueprintGameboard[x, y].GetComponent<PaintTile>().PaintTileType;
+
+            Vector3 tem_position = blueprintGameboard[x, y].transform.position;
+
             for (int k = 0; k < objectTypes.Length; k++)
             {
 
@@ -111,40 +184,24 @@ public class GameBoard : MonoBehaviour {
                         gameBoard[x, y] = Instantiate(objectTypes[k].baseObject, tem_position, Quaternion.identity, transform);
                     }
                 }
-              
-               
 
             }
             yield return new WaitForSeconds(0.01f);
-            Destroy(blueprintGameboard[x, y]);
+            ClearPaint(blueprintGameboard[x, y]);
 
         }
-       yield return null;
+        SetUpPlayer();
+       SetUpExit();
+        yield return null;
     }
-   
-
-    
-    void TranslatePaintToGameBoard()
+    void ClearPaint(GameObject gameObject)
     {
-        gameBoard = new GameObject[width, height];
 
-        for (int k = 0; k < tileTypes.Length; k++)
-        {
-            for (int i = 0; i < width * height; i++)
-            {
-                int x = i / width;
-                int y = i % width;
-
-                PaintType paint = blueprintGameboard[x, y].GetComponent<PaintTile>().PaintTileType;
-                if (tileTypes[k].tileType == TileTranslatorID[paint])
-                {
-                    gameBoard[x, y] = tileTypes[k].baseObject;
-                    
-                    
-                }
-            }
-        }
-    }    
+        if (!gameObject.activeSelf)
+            Destroy(gameObject);
+        else
+            gameObject.gameObject.SetActive(false);
+    }
 }
 
     

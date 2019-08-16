@@ -51,3 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75dd7a9862e05ee4990812a64a15a506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectTypes:
+  - {fileID: 11400000, guid: 526b07c35e82592419389000d1415ae2, type: 2}
+  tileTypes:
+  - {fileID: 11400000, guid: ef836b66ba9b5c14f800a73083c8cb2e, type: 2}
+  - {fileID: 11400000, guid: 24e342919e9cffc4e9c2b759f363ce4f, type: 2}
+  - {fileID: 11400000, guid: 0f3e59796348503408b2926fd0ee8bcc, type: 2}
