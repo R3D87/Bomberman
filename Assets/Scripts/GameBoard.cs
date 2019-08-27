@@ -51,6 +51,12 @@ public class GameBoard : MonoBehaviour {
 
 
     }
+    void SetSizeBaseOnBluprint(int tempWidth, int tempHeight)
+    {
+        width = tempWidth;
+        height = tempHeight;
+        Debug.Log("width: " + width + " height: " + height);
+    }
     void SetUpPlayer()
     {
         List<int> places = new List<int>();
@@ -107,12 +113,7 @@ public class GameBoard : MonoBehaviour {
       
         gameBoard[idx / width, idx % width] = Instantiate(Exit, tem_position, Quaternion.identity, transform);
     }
-    void SetSizeBaseOnBluprint( int tempWidth, int tempHeight)
-    {
-        width = tempWidth;
-        height = tempHeight;
-        Debug.Log("width: " + width + " height: " + height);
-    }
+
 
     public void ShowBluprintData()
     {
@@ -181,7 +182,8 @@ public class GameBoard : MonoBehaviour {
                     if (objectTypes[k].objectType == ObjectTranslatorID[paint])
                     {
                         tem_position += new Vector3(0, 0, -0.1f);
-                        gameBoard[x, y] = Instantiate(objectTypes[k].baseObject, tem_position, Quaternion.identity, transform);
+                        gameBoard[x, y] = Instantiate(objectTypes[k].baseObject.gameObject, tem_position, Quaternion.identity, transform);
+                       
                     }
                 }
 

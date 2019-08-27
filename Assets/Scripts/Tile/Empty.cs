@@ -5,7 +5,7 @@ using UnityEngine;
 public class Empty : BaseTile {
 
 	
-    
+   
     // Use this for initialization
 	void Start () {
 		

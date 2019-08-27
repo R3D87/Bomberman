@@ -7,17 +7,20 @@ public class GameMode : MonoBehaviour {
 
     public GameObject gameBoardObject;
     public GameObject gameBuilderObject;
+    Translator translator;
     GameBoard gameBoard;
+
     GameBuilder gameBuilder;
     GameObject[,] test;
-    
+
     // Use this for initialization
-	void Start () {
+    void Start()
+    {
 
         gameBoard = gameBoardObject.GetComponent<GameBoard>();
         gameBuilder = gameBuilderObject.GetComponent<GameBuilder>();
+      
     }
-
     bool Validate(GameObject gameObject)
     {
         return (gameObject != null) ? true : false;
@@ -27,7 +30,12 @@ public class GameMode : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Q))
         {
-
+            gameObject.AddComponent<Translator>();
+    
+            translator = GetComponent<Translator>();
+            gameBuilder.SendGameBoardBluprint();
+            translator.GetBlueprint(gameBuilder.SendGameBoardBluprint());
+           
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {

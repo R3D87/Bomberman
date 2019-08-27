@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
- public enum TileType
-{
-    Exit,
-    Wall,
-    Empty,
-   
-};
+
 
 public class BaseTile : MonoBehaviour {
 
 
+    public BaseObject[] baseObject;
+    public BaseUnit[] baseUnit;
+
+    //Vector2 positionOnGrid;
+    public Vector2 PositionOnGrid
+    {
+        get;// { return positionOnGrid; }
+        set; //{ positionOnGrid = value; }
+    }
+
 
     bool occupied;
-    GameObject Object;
-    int PositionX;
-    int PositionY;
+
 
     // Use this for initialization
     void Start () {

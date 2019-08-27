@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PaintTile : MonoBehaviour {
 
+    [SerializeField]
     int positionX;
+    [SerializeField]
     int positionY;
+    [SerializeField]
     PaintType paintTileType;
 
     

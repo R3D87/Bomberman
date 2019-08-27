@@ -3,12 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum PaintType
-{
-    Empty,
-    Wall,
-    Box
-};
+
 public class GameBuilder : MonoBehaviour {
 
     // Use this for initialization

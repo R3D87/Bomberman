@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum ObjectType
-{
-    Box,
-    Bomb,
-    PowerUp
 
-};
 
 public class BaseObject : MonoBehaviour {
 
-	// Use this for initialization
+	
+    public List<BaseObject> baseObjectsList;
+    public List<BaseUnit> baseUnitsList;
+    public int positionX;
+    public int positionY;
+
+   
+    // Use this for initialization
 	void Start () {
 		
 	}

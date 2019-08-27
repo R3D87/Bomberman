@@ -7,6 +7,6 @@ public class ObjectTypes : ScriptableObject
    
 
     public ObjectType objectType;
-    public GameObject baseObject;
+    public BaseObject baseObject;
    
 }
