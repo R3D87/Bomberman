@@ -69,10 +69,10 @@ public class Translator : MonoBehaviour {
         int value = Boxlist[idx];
     }
 
-    Vector2 ConvertCoordTo2D(int i)
+    Vector2Int ConvertCoordTo2D(int i)
     {
-        Vector2 position2D;
-
+        Vector2Int position2D = new Vector2Int();
+        
         position2D.x = i / width;
         position2D.y = i % width;
 
@@ -111,8 +111,8 @@ public class Translator : MonoBehaviour {
         for (int i = 0; i < width * height; i++)
         {
 
-            int x = (int)ConvertCoordTo2D(i).x;
-            int y = (int)ConvertCoordTo2D(i).y;
+            int x = ConvertCoordTo2D(i).x;
+            int y = ConvertCoordTo2D(i).y;
 
             PaintType paint = blueprintGameboard[x, y].GetComponent<PaintTile>().PaintTileType;
             CollectData(paint, ConvertCoordTo2D(i));
@@ -126,16 +126,23 @@ public class Translator : MonoBehaviour {
         {
           
             CreateTile(i);
+            Destroy(blueprintGameboard[ConvertCoordTo2D(i).x, ConvertCoordTo2D(i).y],0.2f);
         }
-       
-
+      
 
     }
+
     PaintType GetPaintType(int i)
     {
-        PaintType paint = blueprintGameboard[(int)ConvertCoordTo2D(i).x, (int)ConvertCoordTo2D(i).y].GetComponent<PaintTile>().PaintTileType;
+        PaintType paint = blueprintGameboard[ConvertCoordTo2D(i).x, ConvertCoordTo2D(i).y].GetComponent<PaintTile>().PaintTileType;
         return paint;
         
+    }
+    PaintType GetPaintType(int x,int y)
+    {
+        PaintType paint = blueprintGameboard[x,y].GetComponent<PaintTile>().PaintTileType;
+        return paint;
+
     }
     Vector2 ChooseRandomPosition(List<Vector2> sourceList)
     {
@@ -170,11 +177,36 @@ public class Translator : MonoBehaviour {
     {
         PaintType type = GetPaintType(i);
         Debug.Log(glossary.GetPrefabTile(type));
-        int x = (int)ConvertCoordTo2D(i).x;
-        int y = (int)ConvertCoordTo2D(i).y;
+        int x = ConvertCoordTo2D(i).x;
+        int y = ConvertCoordTo2D(i).y;
         TileOnGrid[x,y]= Instantiate(glossary.GetPrefabTile(type), blueprintGameboard[x, y].transform.position, Quaternion.identity);
+        TileOnGrid[x, y].PositionOnGrid = new Vector2Int(x, y);
+        DeployObject(ref TileOnGrid[x, y]);
+        DeployUnit(ref TileOnGrid[x, y]);
         
+
     }
+    void DeployObject(ref BaseTile baseTile)
+    {
+        Vector2Int position = baseTile.PositionOnGrid;
+        PaintType type = GetPaintType(position.x,position.y);
+        Debug.Log(type);
+        if (glossary.GetPrefabObject(type) == null)
+            return;
+        BaseObject baseObject = Instantiate(glossary.GetPrefabObject(type), baseTile.transform.position, Quaternion.identity);
+        baseTile.AddObjectToTile(baseObject);
+    }
+    void DeployUnit(ref BaseTile baseTile)
+    {
+        Vector2Int position = baseTile.PositionOnGrid;
+        PaintType type = GetPaintType(position.x, position.y);
+        Debug.Log(type);
+        if (glossary.GetPrefabUnit(type) == null)
+            return;
+        BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity);
+        baseTile.AddUnitOnTile(baseUnit);
+    }
+
     //  Debug.Log(   glossary.GetPrefabTile( glossary.GetGlossaryItem(paint)));
 
 

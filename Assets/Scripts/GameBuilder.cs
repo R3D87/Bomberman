@@ -77,11 +77,11 @@ public class GameBuilder : MonoBehaviour {
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            for (int i = 0; i < width*heigh; i++)
+            for (int i = 0; i < width * heigh; i++)
             {
                 int x = i / width;
                 int y = i % width;
-                Debug.Log(Paint[x, y].GetComponent<PaintTile>().PositionX + " " + Paint[x, y].GetComponent<PaintTile>().PositionY+" "+ Paint[x, y].GetComponent<PaintTile>().PaintTileType);
+                Debug.Log(Paint[x, y].GetComponent<PaintTile>().PositionX + " " + Paint[x, y].GetComponent<PaintTile>().PositionY + " " + Paint[x, y].GetComponent<PaintTile>().PaintTileType);
             }
 
 
@@ -149,5 +149,14 @@ public class GameBuilder : MonoBehaviour {
     {
         Paint[x, y] = gameObject;
     }
+    private void OnDestroy()
+    {
+
+        DestroyImmediate(Wall);
+        DestroyImmediate(Obstacle);
+        DestroyImmediate(EmptyCanvas);
+
+    }
+
 
 }

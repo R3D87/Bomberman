@@ -35,8 +35,12 @@ public class GameMode : MonoBehaviour {
             translator = GetComponent<Translator>();
             gameBuilder.SendGameBoardBluprint();
             translator.GetBlueprint(gameBuilder.SendGameBoardBluprint());
+          
+           
            
         }
+
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
              gameBuilder.SendGameBoardBluprint();

@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Name: ObjectObstacle
   m_EditorClassIdentifier: 
   objectType: 0
-  baseObject: {fileID: 1098486981156842, guid: a36b6522b6595214ca848214c7c8eca1, type: 2}
+  baseObject: {fileID: 114114043061672988, guid: a36b6522b6595214ca848214c7c8eca1,
+    type: 2}

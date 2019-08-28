@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d1cf404e4941a46b366b299f75bff2, type: 3}
   m_Name: UnitPlayer
   m_EditorClassIdentifier: 
-  unitType: 0
-  baseUnit: {fileID: 0}
+  unitType: 1
+  baseUnit: {fileID: 114755567736635302, guid: b2a43e7025932b248b25ce01c72e3e2d, type: 2}

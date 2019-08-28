@@ -7,27 +7,34 @@ using UnityEngine;
 public class BaseTile : MonoBehaviour {
 
 
-    public BaseObject[] baseObject;
-    public BaseUnit[] baseUnit;
-
-    //Vector2 positionOnGrid;
-    public Vector2 PositionOnGrid
-    {
-        get;// { return positionOnGrid; }
-        set; //{ positionOnGrid = value; }
-    }
-
-
+    protected List<BaseObject> baseObjects = new List<BaseObject>();
+    protected List<BaseUnit> baseUnits = new List<BaseUnit>();
+    public Vector2Int PositionOnGrid { get; set; }
     bool occupied;
 
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+   virtual public void AddObjectToTile(BaseObject objectToAdd)
+    {
+        baseObjects.Add(objectToAdd);
+    }
+
+    virtual public void AddUnitOnTile(BaseUnit unitToAdd)
+    {
+        baseUnits.Add(unitToAdd);
+    }
+
+    virtual public void RemoveObjectOnTile(BaseObject objectToRemove)
+    {
+        baseObjects.Remove(objectToRemove);
+    }
+
+    virtual public void RemovUnitOnTile(BaseUnit unitToRemove)
+    {
+        baseUnits.Remove(unitToRemove);
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 }
