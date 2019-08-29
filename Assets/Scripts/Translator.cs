@@ -16,10 +16,17 @@ public class Translator : MonoBehaviour {
     int width;
     int height;
 
+    public delegate void FinishBuildingAction();
+    public event FinishBuildingAction OnFinishBuilding;
+
+
+ 
     private void Start()
     {
+        
         gameObject.AddComponent<Glossary>();
         glossary = GetComponent<Glossary>();
+        OnFinishBuilding += DestroyGlossary;
     }
 
 
@@ -29,7 +36,7 @@ public class Translator : MonoBehaviour {
         SetSizeBaseOnBluprint(blueprint.GetLength(0), blueprint.GetLength(1));
 
         blueprintGameboard = blueprint;
-
+        TileOnGrid = new BaseTile[width, height];
 
 
         Debug.Log("Translator");
@@ -47,7 +54,7 @@ public class Translator : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            TileOnGrid = new BaseTile[width, height];
+           
             TileIns();
         }
 
@@ -126,10 +133,11 @@ public class Translator : MonoBehaviour {
         {
           
             CreateTile(i);
-            Destroy(blueprintGameboard[ConvertCoordTo2D(i).x, ConvertCoordTo2D(i).y],0.2f);
+          //  Destroy(blueprintGameboard[ConvertCoordTo2D(i).x, ConvertCoordTo2D(i).y],0.2f);
         }
-      
 
+        if (OnFinishBuilding != null)
+            OnFinishBuilding();
     }
 
     PaintType GetPaintType(int i)
@@ -206,16 +214,11 @@ public class Translator : MonoBehaviour {
         BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity);
         baseTile.AddUnitOnTile(baseUnit);
     }
-
-    //  Debug.Log(   glossary.GetPrefabTile( glossary.GetGlossaryItem(paint)));
-
-
-    // Debug.ClearDeveloperConsole();
-    //Debug.Log("x: " + x + " y: " + y + " Pait: " + paint);
-
-    //    Vector3 tem_position = blueprintGameboard[x, y].transform.position;
+    void DestroyGlossary()
+    {
+        Destroy(glossary);
+    }
 
 
-    // TileOnGrid[x, y]= Instantiate(tile,tem_position,Quaternion.identity); 
-
+    
 }

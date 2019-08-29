@@ -23,4 +23,8 @@ public class BaseObject : MonoBehaviour {
 	void Update () {
 		
 	}
+    private void OnDestroy()
+    {
+        
+    }
 }

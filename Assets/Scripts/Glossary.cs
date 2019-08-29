@@ -59,6 +59,7 @@ public class Glossary : MonoBehaviour {
         CreateTilesSet();
         CreateObjectsSet();
         CreateUnitsSet();
+
     }
     void CreateGlossarySet()
     {

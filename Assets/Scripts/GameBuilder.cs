@@ -149,14 +149,7 @@ public class GameBuilder : MonoBehaviour {
     {
         Paint[x, y] = gameObject;
     }
-    private void OnDestroy()
-    {
 
-        DestroyImmediate(Wall);
-        DestroyImmediate(Obstacle);
-        DestroyImmediate(EmptyCanvas);
-
-    }
 
 
 }

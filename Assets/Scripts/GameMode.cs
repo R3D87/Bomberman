@@ -13,13 +13,15 @@ public class GameMode : MonoBehaviour {
     GameBuilder gameBuilder;
     GameObject[,] test;
 
+    public delegate void StartBuilding();
+    public static StartBuilding OnstartBuilding;
     // Use this for initialization
     void Start()
     {
 
         gameBoard = gameBoardObject.GetComponent<GameBoard>();
         gameBuilder = gameBuilderObject.GetComponent<GameBuilder>();
-      
+
     }
     bool Validate(GameObject gameObject)
     {
@@ -31,21 +33,36 @@ public class GameMode : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Q))
         {
             gameObject.AddComponent<Translator>();
-    
             translator = GetComponent<Translator>();
             gameBuilder.SendGameBoardBluprint();
             translator.GetBlueprint(gameBuilder.SendGameBoardBluprint());
-          
-           
-           
+            translator.OnFinishBuilding += DestroyBuilder;
+            translator.OnFinishBuilding += DestroyAllPaintHelper;
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-             gameBuilder.SendGameBoardBluprint();
-            gameBoard.GetBluplirint(gameBuilder.SendGameBoardBluprint());
-        }
+      
 
+ 
 	}
+
+    void DestroyAllPaintHelper()
+    {
+ 
+        Transform[] AllChildren = GetComponentsInChildren<Transform>();
+        foreach (Transform child in AllChildren)
+        {
+            if (child.gameObject == gameObject)
+                continue;
+            Debug.Log(child.gameObject.name);
+           Destroy(child.gameObject);
+        }
+    }
+
+    void DestroyBuilder()
+    {
+        Destroy(translator);
+        Destroy(gameBuilder.gameObject);
+    }
+
 }

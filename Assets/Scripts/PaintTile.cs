@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PaintTile : MonoBehaviour {
 
@@ -11,6 +12,7 @@ public class PaintTile : MonoBehaviour {
     [SerializeField]
     PaintType paintTileType;
 
+    public UnityAction DestroyPaintTile;
     
     public void PaintTileConstructor(int PositionX, int PositionY, PaintType type)
     {
@@ -37,12 +39,12 @@ public class PaintTile : MonoBehaviour {
         get { return paintTileType; } set { paintTileType = value;  }
     }
     // Use this for initialization
-    void Start () {
-		
-	}
+
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    
 }
