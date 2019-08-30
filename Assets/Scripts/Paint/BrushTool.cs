@@ -43,7 +43,7 @@ public class BrushTool : MonoBehaviour
     {
 
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.Log(mouseRay.direction);
+    //    Debug.Log(mouseRay.direction);
         Debug.DrawRay(mouseRay.origin, mouseRay.direction, Color.red, int.MaxValue);
         RaycastHit hit;
         // Add Object on Canvas
@@ -81,7 +81,7 @@ public class BrushTool : MonoBehaviour
     void Erase()
     {
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Debug.Log(mouseRay.direction);
+      //  Debug.Log(mouseRay.direction);
         Debug.DrawRay(mouseRay.origin, mouseRay.direction, Color.red, int.MaxValue);
         RaycastHit hit;
 

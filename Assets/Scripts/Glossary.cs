@@ -69,13 +69,13 @@ public class Glossary : MonoBehaviour {
         glossaryItems = new GlossaryItem[size];
         for (int i = 0; i < size; i++)
         {
-            Debug.Log("Dictionary: " + AssetDatabase.GUIDToAssetPath(guids[i]));
+           // Debug.Log("Dictionary: " + AssetDatabase.GUIDToAssetPath(guids[i]));
 
             glossaryItems[i]= (GlossaryItem) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
         foreach (var item in glossaryItems)
         {
-            Debug.Log(item.paintType+" "+item.tileType + " " +item.objectType + " " +item.unitType);
+           // Debug.Log(item.paintType+" "+item.tileType + " " +item.objectType + " " +item.unitType);
         }
     }
     void CreateTilesSet()
@@ -86,13 +86,13 @@ public class Glossary : MonoBehaviour {
         tileTypes = new TileTypes02[size];
         for (int i = 0; i < size; i++)
         {
-            Debug.Log("Tile: " + AssetDatabase.GUIDToAssetPath(guids[i]));
+           // Debug.Log("Tile: " + AssetDatabase.GUIDToAssetPath(guids[i]));
 
             tileTypes[i] = (TileTypes02)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
         foreach (var item in glossaryItems)
         {
-            Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
+           // Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
         }
     }
     void CreateObjectsSet()
@@ -103,13 +103,13 @@ public class Glossary : MonoBehaviour {
         objectTypes = new ObjectTypes[size];
         for (int i = 0; i < size; i++)
         {
-            Debug.Log("Object: " + AssetDatabase.GUIDToAssetPath(guids[i]));
+          //  Debug.Log("Object: " + AssetDatabase.GUIDToAssetPath(guids[i]));
 
             objectTypes[i] = (ObjectTypes)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
         foreach (var item in glossaryItems)
         {
-            Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
+           // Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
         }
     }
     void CreateUnitsSet()
@@ -120,13 +120,13 @@ public class Glossary : MonoBehaviour {
         unitTyps = new UnitTypes[size];
         for (int i = 0; i < size; i++)
         {
-            Debug.Log("Unit: " + AssetDatabase.GUIDToAssetPath(guids[i]));
+           // Debug.Log("Unit: " + AssetDatabase.GUIDToAssetPath(guids[i]));
 
             unitTyps[i] = (UnitTypes)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
         foreach (var item in glossaryItems)
         {
-            Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
+           // Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
         }
     }
 

@@ -8,6 +8,7 @@ public class Translator : MonoBehaviour {
     GameObject[,] blueprintGameboard;
     BaseTile[,] TileOnGrid;
     Glossary glossary;
+    GameObject RootObject;
     List<Vector2> boxPaintCoord = new List<Vector2>();
     List<Vector2> emptyPaintCoord = new List<Vector2>();
     List<Vector2> wallPaintCoord = new List<Vector2>();
@@ -19,14 +20,26 @@ public class Translator : MonoBehaviour {
     public delegate void FinishBuildingAction();
     public event FinishBuildingAction OnFinishBuilding;
 
+    public delegate void SendTranslationAction();
+    public event SendTranslationAction OnSendTranslation;
 
- 
+
+    public delegate void FinishedSentTranslationAction();
+    public event FinishedSentTranslationAction OnFinishedSentTranslation;
+
+
+
+
     private void Start()
     {
         
         gameObject.AddComponent<Glossary>();
         glossary = GetComponent<Glossary>();
         OnFinishBuilding += DestroyGlossary;
+        OnFinishedSentTranslation += DisassembleTranslator;
+
+
+        CreateRootObject();
     }
 
 
@@ -55,7 +68,7 @@ public class Translator : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.W))
         {
            
-            TileIns();
+            Translate();
         }
 
     }
@@ -111,7 +124,7 @@ public class Translator : MonoBehaviour {
 
     }
 
-    void TileIns()
+    void Translate()
     {
 
         Debug.ClearDeveloperConsole();
@@ -127,7 +140,7 @@ public class Translator : MonoBehaviour {
         }
         DeployGameEntity(PaintType.Exit, ref boxPaintCoord);
         DeployGameEntity(PaintType.Player, ref emptyPaintCoord);
-        print("It's ok");
+    
 
         for (int i = 0; i < width * height; i++)
         {
@@ -136,8 +149,11 @@ public class Translator : MonoBehaviour {
           //  Destroy(blueprintGameboard[ConvertCoordTo2D(i).x, ConvertCoordTo2D(i).y],0.2f);
         }
 
-        if (OnFinishBuilding != null)
-            OnFinishBuilding();
+        if (OnSendTranslation != null)
+            OnSendTranslation();
+
+
+
     }
 
     PaintType GetPaintType(int i)
@@ -154,7 +170,6 @@ public class Translator : MonoBehaviour {
     }
     Vector2 ChooseRandomPosition(List<Vector2> sourceList)
     {
-       
         int length = sourceList.Count;
         int idx = Random.Range(0, length);
         Vector2 coord = sourceList[idx];
@@ -173,46 +188,61 @@ public class Translator : MonoBehaviour {
         } while (!ValidChosenPosition(coord));
         SetGameEntity(coord, type, ref sourceList);
     }
-
     void SetGameEntity( Vector2 coord, PaintType type, ref List<Vector2> sourceList)
     {
         blueprintGameboard[(int)coord.x, (int)coord.y].GetComponent<PaintTile>().PaintTileType = type;
-        Debug.Log(coord+" "+ type);
+       // Debug.Log(coord+" "+ type);
         CollectData(type, coord);
         sourceList.Remove(coord);
+    }
+    void CreateRootObject()
+    {
+        RootObject  = new GameObject();
+        RootObject.name = "Root";
     }
     void CreateTile(int i)
     {
         PaintType type = GetPaintType(i);
-        Debug.Log(glossary.GetPrefabTile(type));
+       // Debug.Log(glossary.GetPrefabTile(type));
         int x = ConvertCoordTo2D(i).x;
         int y = ConvertCoordTo2D(i).y;
-        TileOnGrid[x,y]= Instantiate(glossary.GetPrefabTile(type), blueprintGameboard[x, y].transform.position, Quaternion.identity);
+        TileOnGrid[x,y]= Instantiate(glossary.GetPrefabTile(type), blueprintGameboard[x, y].transform.position, Quaternion.identity,RootObject.transform);
         TileOnGrid[x, y].PositionOnGrid = new Vector2Int(x, y);
         DeployObject(ref TileOnGrid[x, y]);
         DeployUnit(ref TileOnGrid[x, y]);
-        
+       
 
     }
     void DeployObject(ref BaseTile baseTile)
     {
         Vector2Int position = baseTile.PositionOnGrid;
         PaintType type = GetPaintType(position.x,position.y);
-        Debug.Log(type);
+        //Debug.Log(type);
         if (glossary.GetPrefabObject(type) == null)
             return;
-        BaseObject baseObject = Instantiate(glossary.GetPrefabObject(type), baseTile.transform.position, Quaternion.identity);
+        BaseObject baseObject = Instantiate(glossary.GetPrefabObject(type), baseTile.transform.position, Quaternion.identity,RootObject.transform);
         baseTile.AddObjectToTile(baseObject);
     }
     void DeployUnit(ref BaseTile baseTile)
     {
         Vector2Int position = baseTile.PositionOnGrid;
         PaintType type = GetPaintType(position.x, position.y);
-        Debug.Log(type);
+        //Debug.Log(type);
         if (glossary.GetPrefabUnit(type) == null)
             return;
-        BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity);
+        BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity, RootObject.transform);
         baseTile.AddUnitOnTile(baseUnit);
+    }
+
+    public BaseTile[,] SendTranslation()
+    {
+        return TileOnGrid;
+
+    }
+    public void DisassembleTranslator()
+    {
+        if (OnFinishBuilding != null)
+            OnFinishBuilding();
     }
     void DestroyGlossary()
     {

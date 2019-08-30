@@ -11,6 +11,7 @@ public class BaseTile : MonoBehaviour {
     protected List<BaseUnit> baseUnits = new List<BaseUnit>();
     public Vector2Int PositionOnGrid { get; set; }
     bool occupied;
+    GameBoard board;
 
 
    virtual public void AddObjectToTile(BaseObject objectToAdd)
