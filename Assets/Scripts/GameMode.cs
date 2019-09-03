@@ -13,8 +13,7 @@ public class GameMode : MonoBehaviour {
     GameBuilder gameBuilder;
  
 
-    public delegate void StartBuilding();
-    public static StartBuilding OnstartBuilding;
+
     // Use this for initialization
     void Start()
     {
@@ -33,13 +32,27 @@ public class GameMode : MonoBehaviour {
 
     void Update ()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            AttachTranslatorComponent();
-            TransferTranslationRequest();
 
-        }
+        if(Input.GetKeyDown(KeyCode.F))
+            DebugBuildGame();
 
+
+    }
+    void DebugBuildGame()
+    {
+        RequestForPaintedBoard();
+        AttachTranslatorComponent();
+        Invoke("StartedTranslation", 0.01f);
+      
+    }
+    private void RequestForPaintedBoard()
+    {
+        gameBuilder.PaintingRandomBoard();
+    }
+    private void StartedTranslation()
+    {
+        TransferTranslationRequest();
+        translator.StartTranslate();
     }
 
     private void TransferTranslationRequest()
@@ -51,11 +64,11 @@ public class GameMode : MonoBehaviour {
     {
         gameObject.AddComponent<Translator>();
         translator = GetComponent<Translator>();
-        translator.OnFinishBuilding += DestroyBuilder;
-        translator.OnFinishBuilding += DestroyAllPaintHelper;
+   
         translator.OnSendTranslation += TrasferTranslation;
-        gameBoard.OnReceivedTranslationAction += translator.DisassembleTranslator;
-
+     
+        gameBoard.OnReceivedTranslationAction +=  DestroyBuilder;
+        gameBoard.OnReceivedTranslationAction += DestroyAllPaintHelper;
     }
 
     void DestroyAllPaintHelper()
@@ -79,6 +92,7 @@ public class GameMode : MonoBehaviour {
     void TrasferTranslation()
     {
         gameBoard.ReceiveTranslation(translator.SendTranslation());
+        
         
     }
 

@@ -5,9 +5,10 @@ using System;
 
 public class PlayerInput : MonoBehaviour {
 
+    
+    public int Horizontal { get; private set; }
 
-    public float Horizontal { get; private set; }
-    public float Vertical { get; private set; }
+    public int  Vertical{ get; private set; }
     public bool DropBomb { get; private set; }
 
     public event Action onFire = delegate { };
@@ -17,8 +18,10 @@ public class PlayerInput : MonoBehaviour {
     void Update()
     {
 
-        Horizontal = Input.GetAxis("Horizontal");
-        Vertical = Input.GetAxis("Vertical");
+        Horizontal = (int)Input.GetAxisRaw("Horizontal");
+        Vertical = (int)Input.GetAxisRaw("Vertical");
+    
+
         DropBomb = Input.GetButtonDown("Fire1");
         if (DropBomb)
             onFire();

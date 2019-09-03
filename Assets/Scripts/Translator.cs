@@ -17,32 +17,33 @@ public class Translator : MonoBehaviour {
     int width;
     int height;
 
-    public delegate void FinishBuildingAction();
-    public event FinishBuildingAction OnFinishBuilding;
+    public delegate void StartTranslation();
+    public  event StartTranslation OnStartTranslation;
 
     public delegate void SendTranslationAction();
     public event SendTranslationAction OnSendTranslation;
 
-
-    public delegate void FinishedSentTranslationAction();
-    public event FinishedSentTranslationAction OnFinishedSentTranslation;
-
-
-
-
+    private void Awake()
+    {
+        OnStartTranslation += Translate;
+    }
     private void Start()
     {
-        
+       
         gameObject.AddComponent<Glossary>();
         glossary = GetComponent<Glossary>();
-        OnFinishBuilding += DestroyGlossary;
-        OnFinishedSentTranslation += DisassembleTranslator;
+        OnSendTranslation += DestroyGlossary;
+     
 
 
         CreateRootObject();
     }
 
+    public void StartTranslate()
+    {
 
+        OnStartTranslation();
+    }
     public void GetBlueprint(GameObject[,] blueprint)
     {
 
@@ -65,11 +66,7 @@ public class Translator : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-           
-            Translate();
-        }
+
 
     }
     void AddExit()
@@ -239,11 +236,7 @@ public class Translator : MonoBehaviour {
         return TileOnGrid;
 
     }
-    public void DisassembleTranslator()
-    {
-        if (OnFinishBuilding != null)
-            OnFinishBuilding();
-    }
+
     void DestroyGlossary()
     {
         Destroy(glossary);

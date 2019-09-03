@@ -7,15 +7,17 @@ using UnityEngine;
 
 public class BaseObject : MonoBehaviour {
 
-	
-    public List<BaseObject> baseObjectsList;
-    public List<BaseUnit> baseUnitsList;
+    public delegate void DestroyBaseObject(BaseObject baseObject);
+    public event DestroyBaseObject OnDestroyBaseObject;
+
     public int positionX;
     public int positionY;
-
+    public BaseTile tile;
    
     // Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        
 		
 	}
 	
@@ -25,6 +27,7 @@ public class BaseObject : MonoBehaviour {
 	}
     private void OnDestroy()
     {
-        
+        if(OnDestroyBaseObject!=null)
+        OnDestroyBaseObject(this);
     }
 }

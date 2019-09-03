@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+
 using UnityEngine;
 
 
@@ -22,11 +22,19 @@ public class GameBuilder : MonoBehaviour {
 
     TileTypes tileTypes;
 
+    public  event Action OnPaintingRandomBoard = delegate { } ;
 
-
-
+    private void Awake()
+    {
+       OnPaintingRandomBoard += FillBoard;
+    }
+    public void PaintingRandomBoard()
+    {
+        OnPaintingRandomBoard();
+    }
     void Start()
     {
+        
         width = userWidth;
         heigh = userHeigh;
 
@@ -73,7 +81,7 @@ public class GameBuilder : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            FillBoard();
+            OnPaintingRandomBoard();
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
@@ -134,8 +142,8 @@ public class GameBuilder : MonoBehaviour {
 
     bool IsAllowedToSetObstacle()
     {
-        float rnd = Random.value;
-        Debug.Log(rnd);
+        float rnd = UnityEngine.Random.value;
+        
         return (rnd >= threshold) ? true : false;
 
     }

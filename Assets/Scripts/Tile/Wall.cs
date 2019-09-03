@@ -5,6 +5,11 @@ using UnityEngine;
 public class Wall :BaseTile {
 
     // Use this for initialization
+    public override bool OccupieRequest()
+    {
+        return false;
+    }
+
     public override void AddObjectToTile(BaseObject objectToAdd)
     {
         Debug.Log("InValid AddObjectToTile:" + objectToAdd);

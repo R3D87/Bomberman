@@ -11,8 +11,15 @@ public class GameBoard : MonoBehaviour {
     BaseTile[,] gameBoard;
     int width;
     int height;
+    private void Awake()
+    {
+        OnReceivedTranslationAction += InitBoardTile;
+    }
 
-
+    private void Start()
+    {
+      
+    }
     public void ReceiveTranslation(BaseTile[,] baseTilesTable)
     {
         GetSizeArray(baseTilesTable);
@@ -30,10 +37,39 @@ public class GameBoard : MonoBehaviour {
         height = baseTilesTable.GetLength(1);
     }
 
-    
+    Vector2Int Convert1Dto2DCoord(int idx, int width)
+    {
+        Vector2Int Coord2d = new Vector2Int() ;
+        Coord2d.x = idx / width;
+        Coord2d.y = idx % width;
+        return Coord2d;
+    }
+    void InitBoardTile()
+    {
+        for (int i = 0; i < height*width; i++)
+        {
+            Vector2Int Coord = Convert1Dto2DCoord(i, width);
+            gameBoard[Coord.x, Coord.y].board = this;
 
+            
+        }
+    }
 
-
+    public  BaseTile GetNeighbourTile(int x, int y)
+    {
+        return gameBoard[x, y];
+    }
+    public bool IsWalkable(BaseTile tile)
+    {
+        if (tile is Wall)
+        {
+            return true;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 
    

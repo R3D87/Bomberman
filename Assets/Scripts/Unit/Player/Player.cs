@@ -1,42 +1,36 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : BaseUnit {
-
-    // Use this for initialization
-
-    public int speed = 0;
-    public GameObject    bomb;
-
-
-    PlayerInput playerInput;
-
-   
-    void Start ()
+[RequireComponent(typeof(PlayerInput))]
+public class Player : BaseUnit
+{
+    PlayerInput input;
+    public static event Action<BaseUnit, bool> OnAnimationProgration;
+    private void Awake()
     {
-        gameObject.AddComponent<PlayerInput>();
-        playerInput = GetComponent<PlayerInput>();
-        playerInput.onFire += SpawnBomb;
-	}
-
-    void PlayerMovemnet()
-    {
-
-        transform.position += Vector3.right * speed * playerInput.Horizontal*Time.deltaTime;
-        transform.position += Vector3.up * speed * playerInput.Vertical* Time.deltaTime;
+        
     }
 
-    void Update () {
-
-
-
-        PlayerMovemnet();
-
-
-    }
-    void SpawnBomb()
+    private void Start()
     {
-        Instantiate(bomb, transform.position, Quaternion.identity);
+      //  gameObject.AddComponent<PlayerInput>();
+        input = gameObject.GetComponent<PlayerInput>();
+    }
+
+    
+    bool HasInputChanged()
+    {
+        return input.Horizontal != 0 || input.Vertical != 0;
+    }
+    bool AnimationProcced = false;
+    private void Update()
+    {
+        if (  HasInputChanged())
+        {
+            
+           Move( input.Horizontal, input.Vertical);
+            Debug.Log("X: " + input.Horizontal + " Y: " + input.Vertical);
+        }
     }
 }
