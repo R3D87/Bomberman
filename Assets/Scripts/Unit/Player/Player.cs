@@ -2,35 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerInput),typeof(PlayerWeapon))]
 public class Player : BaseUnit
 {
-    PlayerInput input;
-    public static event Action<BaseUnit, bool> OnAnimationProgration;
+    ICharacterInput input;
+    IWeaponFire weapon;
+    
+    public event Action onFire;
+    
     private void Awake()
     {
-        
+        onFire += SpawnBomb;
+
+
     }
 
     private void Start()
     {
-      //  gameObject.AddComponent<PlayerInput>();
-        input = gameObject.GetComponent<PlayerInput>();
+
+        input = GetComponent<ICharacterInput>();
+        weapon = GetComponent<IWeaponFire>();
     }
 
     
     bool HasInputChanged()
     {
+   
         return input.Horizontal != 0 || input.Vertical != 0;
     }
-    bool AnimationProcced = false;
+
     private void Update()
     {
-        if (  HasInputChanged())
+        if ( HasInputChanged())
         {
-            
-           Move( input.Horizontal, input.Vertical);
+            Movement( input.Horizontal, input.Vertical);
             Debug.Log("X: " + input.Horizontal + " Y: " + input.Vertical);
         }
+        
+        if (input.Fire)
+        {
+            onFire();
+        }
+    }
+    void SpawnBomb()
+    {
+        weapon.Spawn(this, tile);
     }
 }

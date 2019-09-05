@@ -9,20 +9,25 @@ public class BaseObject : MonoBehaviour {
 
     public delegate void DestroyBaseObject(BaseObject baseObject);
     public event DestroyBaseObject OnDestroyBaseObject;
-
-    public int positionX;
-    public int positionY;
+    
+    protected  Vector2Int coord;
     public BaseTile tile;
+
    
     // Use this for initialization
 	void Start ()
     {
-        
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        coord = tile.PositionOnGrid;
+     
+
+    }
+    public void SetCoord(Vector2Int coordToSet)
+    {
+        coord = coordToSet;
+    }
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
     private void OnDestroy()

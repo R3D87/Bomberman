@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerInput : MonoBehaviour {
+public class PlayerInput : MonoBehaviour, ICharacterInput {
 
     
     public int Horizontal { get; private set; }
-
     public int  Vertical{ get; private set; }
-    public bool DropBomb { get; private set; }
+    public bool Fire { get; private set; }
 
-    public event Action onFire = delegate { };
+    
+
+    public void ReadInput()
+    {
+        Horizontal = (int)Input.GetAxisRaw("Horizontal");
+        Vertical = (int)Input.GetAxisRaw("Vertical");
+        Fire = Input.GetButtonDown("Fire1");
+    }
 
     // Update is called once per frame
 
     void Update()
     {
-
-        Horizontal = (int)Input.GetAxisRaw("Horizontal");
-        Vertical = (int)Input.GetAxisRaw("Vertical");
-    
-
-        DropBomb = Input.GetButtonDown("Fire1");
-        if (DropBomb)
-            onFire();
-
+        ReadInput();
     }
 }

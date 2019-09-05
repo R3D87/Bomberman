@@ -59,17 +59,7 @@ public class GameBoard : MonoBehaviour {
     {
         return gameBoard[x, y];
     }
-    public bool IsWalkable(BaseTile tile)
-    {
-        if (tile is Wall)
-        {
-            return true;
-        }
-        else
-        {
-            return true;
-        }
-    }
+
 
 
    

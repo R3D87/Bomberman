@@ -10,33 +10,66 @@ public class BaseUnit : MonoBehaviour {
     public static event MovePreperation OnMovePreparation;
 
     Coroutine test;
-    public BaseTile tile;
+    protected BaseTile tile;
+    protected Vector2Int coord;
 
-
-
+    public void SetBaseTile(BaseTile tileToSet)
+    {
+        tile = tileToSet;
+    }
     private void Start()
     {
-       
+        coord = tile.PositionOnGrid;
       
     }
+    public void SetCoord(Vector2Int coordToSet)
+    {
+        coord = coordToSet;
+    }
+
     protected bool HasMovePremmission(int xDir, int yDir)
     {
-       
+        BaseTile tileToTyp = GetNeigbourInDirection(xDir, yDir);
+
+        if (GetTileType(tileToTyp) == typeof(Wall))
+            return false;
+
+        if (tileToTyp.HasTileOccupied())
+            return false;
+
         return true;
     }
+    Type GetTileType(BaseTile basetile) 
+    {  
+        Type type = basetile.GetType();
+        Debug.Log(type);
+        return type;
+    }
+
+
     BaseTile GetNeigbourInDirection(int xDir, int yDir)
     {
         return tile.GetNeigbourInDirection(xDir, yDir);
 
     }
+    protected void Movement(int xDir, int yDir)
+    {
+        if (HasMovePremmission(xDir, yDir))
+        {
+            Move(xDir, yDir);
+        }
+    }
     protected bool Move(int xDir, int yDir)
     {
         if (test==null) {
             BaseTile tempBaseTile = GetNeigbourInDirection(xDir, yDir);
-            Vector3 TargetPosition = tile.GetNeighborLocation(tempBaseTile);
+            Vector3 TargetPosition = tempBaseTile.GetLocation();
             test = StartCoroutine(SmoothMovement(TargetPosition, 0.1f));
+            tile.RemovUnitOnTile(this);
 
             tile = tempBaseTile;
+            tile.AddUnitOnTile(this);
+
             return true;
         }
         return false;
