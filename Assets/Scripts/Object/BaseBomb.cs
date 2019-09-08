@@ -12,17 +12,25 @@ public class BaseBomb : BaseObject
     float Timer = 1;
     int DetonationTime = 3;
 
+ 
 
 
-
-    void SendDamgeToTile(int x, int y)
+    void PropateExplotionInDirecion(int x, int y,  int limit)
     {
+        if (limit > ExplotionRange)
+            return;
         BaseTile tileToCheck = tile.GetNeigbourInDirection(x,y);
         if (tileToCheck.GetType() == typeof(Wall))
             return;
         tileToCheck.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
         tileToCheck.GetDamage(Damage);
 
+        limit++;
+        PropateExplotionInDirecion(x - 1, y,  limit);
+        PropateExplotionInDirecion(x + 1, y,  limit);
+        PropateExplotionInDirecion(x, y-1,  limit);
+        PropateExplotionInDirecion(x, y+1,  limit);
+      
     }
     bool IsCountdownFinished(int detonationTime)
     {
@@ -41,11 +49,10 @@ public class BaseBomb : BaseObject
     void Explotion()
     {
 
-        SendDamgeToTile(-1, 0);
-        SendDamgeToTile(1, 0);
-        SendDamgeToTile(0, -1);
-        SendDamgeToTile(0, 1);
-        SendDamgeToTile(0, 0);
+        int limit = 0;
+        PropateExplotionInDirecion(0, 0,  limit);
+
+
 
         Debug.DrawRay(transform.position, 1.5f*Vector3.left, Color.red,int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.right, Color.red, int.MaxValue);
