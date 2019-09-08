@@ -7,7 +7,10 @@ using UnityEngine;
 public class BaseTile : MonoBehaviour {
 
 
-    public  event Action<int> OnTakeDamge;
+    public event Action<int> OnTakeDamge;
+  
+
+
     protected List<BaseObject> baseObjects = new List<BaseObject>();
     protected List<BaseUnit> baseUnits = new List<BaseUnit>();
     public Vector2Int PositionOnGrid { get; set; }
@@ -48,6 +51,7 @@ public class BaseTile : MonoBehaviour {
         objectToAdd.tile = this;
         objectToAdd.SetCoord(PositionOnGrid);
         objectToAdd.OnDestroyBaseObject += RemoveObjectOnTile;
+       
     }
 
     virtual public void AddUnitOnTile(BaseUnit unitToAdd)
@@ -55,24 +59,25 @@ public class BaseTile : MonoBehaviour {
         unitToAdd.SetBaseTile(this);
         unitToAdd.SetCoord(PositionOnGrid);
         baseUnits.Add(unitToAdd);
+        unitToAdd.OnDestroyBaseUnit += RemovUnitOnTile;
     }
 
     virtual public void RemoveObjectOnTile(BaseObject objectToRemove)
     {
         objectToRemove.OnDestroyBaseObject -= RemoveObjectOnTile;
         baseObjects.Remove(objectToRemove);
-
     }
 
     virtual public void RemovUnitOnTile(BaseUnit unitToRemove)
     {
+        unitToRemove.OnDestroyBaseUnit -= RemovUnitOnTile;
         baseUnits.Remove(unitToRemove);
     }
     
     public BaseTile GetNeigbourInDirection(int x, int y)
     {
         Vector2Int Coord = ConvertDirectionTo2dCoord(x, y);
-        Debug.Log(Coord);
+        //Debug.Log(Coord);
       
         return board.GetNeighbourTile(Coord.x, Coord.y);
     }
@@ -87,17 +92,27 @@ public class BaseTile : MonoBehaviour {
         return new Vector2Int(PositionOnGrid.x + xDir, PositionOnGrid.y + yDir);
     }
 
-    void TransferDamage(int amountOfDamage)
+    public void TransferDamage(int amountOfDamage)
     {
         foreach (var item in baseObjects)
         {
-            if (item.GetComponent<IDamage>() == null)
-                continue;
-            item.GetComponent<IDamage>().TakeDamage(amountOfDamage);
+            Debug.Log(item.name);
+            if (item.GetComponent<IDamage>() != null)
+            {
+                item.GetComponent<IDamage>().TakeDamage(amountOfDamage);
+            }
+        }
+       foreach (var item in baseUnits)
+        {
+            if (item.GetComponent<IDamage>() != null)
+            {
+                item.GetComponent<IDamage>().TakeDamage(amountOfDamage);
+            }
         }
     }
     public void GetDamage(int damage)
     {
+       
         OnTakeDamge(damage);
     }
 }

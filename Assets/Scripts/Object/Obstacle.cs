@@ -8,6 +8,7 @@ public class Obstacle : BaseObject, IDamage{
 
     int MaxHealth = 1;
     int Health;
+    int debug = 0;
     void Start()
     {
         
@@ -19,6 +20,8 @@ public class Obstacle : BaseObject, IDamage{
     public void TakeDamage(int damage)
     {
         Health -= damage;
+        debug++;
+        Debug.Log("Obstacle: " + debug);
         if (Health == 0)
             Destroy(gameObject);
     }

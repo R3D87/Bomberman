@@ -9,6 +9,8 @@ public class BaseObject : MonoBehaviour {
 
     public delegate void DestroyBaseObject(BaseObject baseObject);
     public event DestroyBaseObject OnDestroyBaseObject;
+
+
     
     protected  Vector2Int coord;
     public BaseTile tile;
@@ -30,7 +32,7 @@ public class BaseObject : MonoBehaviour {
     void Update () {
 		
 	}
-    private void OnDestroy()
+  virtual public void OnDestroy()
     {
         if(OnDestroyBaseObject!=null)
         OnDestroyBaseObject(this);

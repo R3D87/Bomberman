@@ -9,6 +9,9 @@ public class BaseUnit : MonoBehaviour {
     public delegate void MovePreperation(Vector2Int coord);
     public static event MovePreperation OnMovePreparation;
 
+    public delegate void DestroyBaseUnit(BaseUnit baseUnit);
+    public event DestroyBaseUnit OnDestroyBaseUnit;
+
     Coroutine test;
     protected BaseTile tile;
     protected Vector2Int coord;
@@ -42,7 +45,6 @@ public class BaseUnit : MonoBehaviour {
     Type GetTileType(BaseTile basetile) 
     {  
         Type type = basetile.GetType();
-        Debug.Log(type);
         return type;
     }
 
@@ -95,5 +97,9 @@ public class BaseUnit : MonoBehaviour {
         test = null;
        
     }
-
+   private void OnDestroy()
+    {
+        if (OnDestroyBaseUnit != null)
+            OnDestroyBaseUnit(this);
+    }
 }

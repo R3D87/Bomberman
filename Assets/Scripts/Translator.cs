@@ -205,6 +205,7 @@ public class Translator : MonoBehaviour {
         int y = ConvertCoordTo2D(i).y;
         TileOnGrid[x,y]= Instantiate(glossary.GetPrefabTile(type), blueprintGameboard[x, y].transform.position, Quaternion.identity,RootObject.transform);
         TileOnGrid[x, y].PositionOnGrid = new Vector2Int(x, y);
+        TileOnGrid[x, y].name = (TileOnGrid[x, y].GetType()).ToString() + " x: " + x + " y: " + y;
         DeployObject(ref TileOnGrid[x, y]);
         DeployUnit(ref TileOnGrid[x, y]);
        
@@ -219,6 +220,7 @@ public class Translator : MonoBehaviour {
             return;
         BaseObject baseObject = Instantiate(glossary.GetPrefabObject(type), baseTile.transform.position, Quaternion.identity,RootObject.transform);
         baseTile.AddObjectToTile(baseObject);
+        baseObject.name = (baseObject.GetType()).ToString() + " x: " + position.x + " y: " + position.y;
     }
     void DeployUnit(ref BaseTile baseTile)
     {
@@ -229,6 +231,7 @@ public class Translator : MonoBehaviour {
             return;
         BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity, RootObject.transform);
         baseTile.AddUnitOnTile(baseUnit);
+        baseUnit.name = (baseUnit.GetType()).ToString() + " x: " + position.x + " y: " + position.y;
     }
 
     public BaseTile[,] SendTranslation()
