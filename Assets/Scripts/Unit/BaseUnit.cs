@@ -15,13 +15,14 @@ public class BaseUnit : MonoBehaviour {
     Coroutine test;
     protected BaseTile tile;
     protected Vector2Int coord;
+    protected int MaxHealth = 5;
+    protected int Health;
 
-    public void SetBaseTile(BaseTile tileToSet)
-    {
-        tile = tileToSet;
-    }
+
+  
     private void Start()
     {
+        Health = MaxHealth;
         coord = tile.PositionOnGrid;
       
     }
@@ -47,8 +48,15 @@ public class BaseUnit : MonoBehaviour {
         Type type = basetile.GetType();
         return type;
     }
-
-
+    public void SetBaseTile(BaseTile tileToSet)
+    {
+        tile = tileToSet;
+    }
+    public virtual void TakePowerUp(PowerUp powerUp)
+    {
+        Debug.Log(powerUp.GetComponent<IAbility>().HealthIncrease);
+        Debug.Log("Have PowerUp");
+    }
     BaseTile GetNeigbourInDirection(int xDir, int yDir)
     {
         return tile.GetNeigbourInDirection(xDir, yDir);

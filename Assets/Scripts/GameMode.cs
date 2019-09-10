@@ -73,9 +73,9 @@ public class GameMode : MonoBehaviour {
 
     void DestroyAllPaintHelper()
     {
- 
-        Transform[] AllChildren = GetComponentsInChildren<Transform>();
-        foreach (Transform child in AllChildren)
+
+        ObjectSource[] AllChildren = GetComponentsInChildren<ObjectSource>();
+        foreach (ObjectSource child in AllChildren)
         {
             if (child.gameObject == gameObject)
                 continue;

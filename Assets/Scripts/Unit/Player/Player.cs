@@ -7,12 +7,11 @@ public class Player : BaseUnit, IDamage
 {
     ICharacterInput input;
     IWeaponFire weapon;
+    IAbility ability;
     
     public event Action onFire;
 
-    int MaxHealth =5;
-    int Health;
-    
+ 
     private void Awake()
     {
         onFire += SpawnBomb;
@@ -22,7 +21,7 @@ public class Player : BaseUnit, IDamage
 
     private void Start()
     {
-        Health = MaxHealth;
+        
         input = GetComponent<ICharacterInput>();
         weapon = GetComponent<IWeaponFire>();
     }
@@ -51,13 +50,29 @@ public class Player : BaseUnit, IDamage
     {
         weapon.Spawn(this, tile);
     }
+   
+    void UpgradeAbility(IAbility abilityToPropagate)
+    {
+        Debug.Log("Health: " + Health);
+        Health += abilityToPropagate.HealthIncrease;
+        weapon.ModifierDamageDuration += abilityToPropagate.DamageDuration;
+        weapon.ModifierDamageRange += abilityToPropagate.DamageRange;
+        weapon.ModifierDamageValue += abilityToPropagate.DamageValue;
 
+    }
     public void TakeDamage(int damage)
     {
         Health -= damage;
         Debug.Log(damage);
         if (Health == 0)
             Destroy(gameObject);
+    }
+    public override void TakePowerUp(PowerUp powerUp)
+    {
+        ability = powerUp.GetComponent<IAbility>();
+        if(ability!=null)
+            UpgradeAbility(ability);
+        base.TakePowerUp(powerUp);
     }
 
 }

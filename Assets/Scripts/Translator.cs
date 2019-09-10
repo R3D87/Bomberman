@@ -196,6 +196,7 @@ public class Translator : MonoBehaviour {
     {
         RootObject  = new GameObject();
         RootObject.name = "Root";
+        
     }
     void CreateTile(int i)
     {
@@ -203,7 +204,7 @@ public class Translator : MonoBehaviour {
        // Debug.Log(glossary.GetPrefabTile(type));
         int x = ConvertCoordTo2D(i).x;
         int y = ConvertCoordTo2D(i).y;
-        TileOnGrid[x,y]= Instantiate(glossary.GetPrefabTile(type), blueprintGameboard[x, y].transform.position, Quaternion.identity,RootObject.transform);
+        TileOnGrid[x,y]= Instantiate(glossary.GetPrefabTile(type), blueprintGameboard[x, y].transform.position, Quaternion.identity, gameObject.transform);
         TileOnGrid[x, y].PositionOnGrid = new Vector2Int(x, y);
         TileOnGrid[x, y].name = (TileOnGrid[x, y].GetType()).ToString() + " x: " + x + " y: " + y;
         DeployObject(ref TileOnGrid[x, y]);
@@ -218,7 +219,7 @@ public class Translator : MonoBehaviour {
         //Debug.Log(type);
         if (glossary.GetPrefabObject(type) == null)
             return;
-        BaseObject baseObject = Instantiate(glossary.GetPrefabObject(type), baseTile.transform.position, Quaternion.identity,RootObject.transform);
+        BaseObject baseObject = Instantiate(glossary.GetPrefabObject(type), baseTile.transform.position, Quaternion.identity, gameObject.transform);
         baseTile.AddObjectToTile(baseObject);
         baseObject.name = (baseObject.GetType()).ToString() + " x: " + position.x + " y: " + position.y;
     }
@@ -229,7 +230,7 @@ public class Translator : MonoBehaviour {
         //Debug.Log(type);
         if (glossary.GetPrefabUnit(type) == null)
             return;
-        BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity, RootObject.transform);
+        BaseUnit baseUnit = Instantiate(glossary.GetPrefabUnit(type), baseTile.transform.position, Quaternion.identity, gameObject.transform);
         baseTile.AddUnitOnTile(baseUnit);
         baseUnit.name = (baseUnit.GetType()).ToString() + " x: " + position.x + " y: " + position.y;
     }

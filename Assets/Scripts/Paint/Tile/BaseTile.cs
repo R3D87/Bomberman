@@ -4,12 +4,12 @@ using UnityEngine;
 
 
 
-public class BaseTile : MonoBehaviour {
+public class BaseTile : MonoBehaviour, IDamage {
 
 
-    public event Action<int> OnTakeDamge;
-  
 
+    public event Action<BaseUnit> OnEnterUnitOnTile;
+    public event Action<PowerUp> OnTakePowerUp;
 
     protected List<BaseObject> baseObjects = new List<BaseObject>();
     protected List<BaseUnit> baseUnits = new List<BaseUnit>();
@@ -20,7 +20,8 @@ public class BaseTile : MonoBehaviour {
 
     private void OnEnable()
     {
-        OnTakeDamge += TransferDamage;
+        OnEnterUnitOnTile += FindObjectToTake;
+       
     }
 
     public  bool HasTileOccupied()
@@ -56,10 +57,13 @@ public class BaseTile : MonoBehaviour {
 
     virtual public void AddUnitOnTile(BaseUnit unitToAdd)
     {
+        OnTakePowerUp += unitToAdd.TakePowerUp;
         unitToAdd.SetBaseTile(this);
         unitToAdd.SetCoord(PositionOnGrid);
         baseUnits.Add(unitToAdd);
+        OnEnterUnitOnTile(unitToAdd);
         unitToAdd.OnDestroyBaseUnit += RemovUnitOnTile;
+       
     }
 
     virtual public void RemoveObjectOnTile(BaseObject objectToRemove)
@@ -71,6 +75,7 @@ public class BaseTile : MonoBehaviour {
     virtual public void RemovUnitOnTile(BaseUnit unitToRemove)
     {
         unitToRemove.OnDestroyBaseUnit -= RemovUnitOnTile;
+        OnTakePowerUp -= unitToRemove.TakePowerUp;
         baseUnits.Remove(unitToRemove);
     }
     
@@ -92,27 +97,45 @@ public class BaseTile : MonoBehaviour {
         return new Vector2Int(PositionOnGrid.x + xDir, PositionOnGrid.y + yDir);
     }
 
-    public void TransferDamage(int amountOfDamage)
+    void FindObjectToTake(BaseUnit unit)
+    {
+        PowerUp power = FindPowerUp();
+        if (power != null)
+        {
+            Debug.Log(power.name);
+            OnTakePowerUp(power);
+            Destroy(FindPowerUp().gameObject,0.1f);
+        }
+    }
+    PowerUp FindPowerUp()
+    {
+        foreach  (BaseObject objectOnTile in baseObjects)
+        {
+            if (objectOnTile.GetType() == typeof(PowerUp))
+            {
+                
+                return objectOnTile as PowerUp;
+            }
+        }
+        return null;
+    }
+
+    public void TakeDamage(int damage)
     {
         foreach (var item in baseObjects)
         {
-            Debug.Log(item.name);
+           
             if (item.GetComponent<IDamage>() != null)
             {
-                item.GetComponent<IDamage>().TakeDamage(amountOfDamage);
+                item.GetComponent<IDamage>().TakeDamage(damage);
             }
         }
-       foreach (var item in baseUnits)
+        foreach (var item in baseUnits)
         {
             if (item.GetComponent<IDamage>() != null)
             {
-                item.GetComponent<IDamage>().TakeDamage(amountOfDamage);
+                item.GetComponent<IDamage>().TakeDamage(damage);
             }
         }
-    }
-    public void GetDamage(int damage)
-    {
-       
-        OnTakeDamge(damage);
     }
 }

@@ -6,7 +6,19 @@ public class PlayerWeapon : MonoBehaviour,IWeaponFire
 {
 
     public BaseBomb bomb;
-    
+
+    int modifierDamageRange;
+    int modifierDamageValue;
+    int modifierDamageDuration;
+ 
+    //-Interface
+    public int ModifierDamageRange { get { return modifierDamageRange; } set {  modifierDamageRange = value; } }
+    public int ModifierDamageValue { get { return modifierDamageValue; } set { modifierDamageValue = value; } }
+    public int ModifierDamageDuration { get { return modifierDamageDuration; } set { modifierDamageDuration = value; }  }
+   
+    //- Interface
+
+
     [SerializeField]
     float spawnRate = 1;
     float nextFireTime = 0;
@@ -41,6 +53,8 @@ public class PlayerWeapon : MonoBehaviour,IWeaponFire
     {
         bombToInit.tile = tile;
         tile.AddObjectToTile(bombToInit);
-        
+        bombToInit.modifierProperties(ModifierDamageRange, ModifierDamageDuration, ModifierDamageValue);
+
     }
+
 }

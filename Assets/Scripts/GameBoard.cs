@@ -50,8 +50,9 @@ public class GameBoard : MonoBehaviour {
         {
             Vector2Int Coord = Convert1Dto2DCoord(i, width);
             gameBoard[Coord.x, Coord.y].board = this;
-
             
+
+
         }
     }
 

@@ -36,5 +36,6 @@ public class BaseObject : MonoBehaviour {
     {
         if(OnDestroyBaseObject!=null)
         OnDestroyBaseObject(this);
+        tile.RemoveObjectOnTile(this);
     }
 }
