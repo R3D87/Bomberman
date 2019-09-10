@@ -4,6 +4,7 @@
     int ModifierDamageRange { get; set; }
     int ModifierDamageValue { get; set; }
     int ModifierDamageDuration { get; set; }
+    int ModifierMaxBombAmount { get; set; }
 }
 
 interface ICharacterInput
@@ -30,4 +31,5 @@ interface IAbility
     int DamageValue { get; }
     int DamageDuration { get; }
     int HealthIncrease { get;}
+    int MaxBombAmountIncrease { get; }
 }   

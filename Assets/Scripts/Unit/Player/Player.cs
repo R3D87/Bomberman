@@ -58,6 +58,7 @@ public class Player : BaseUnit, IDamage
         weapon.ModifierDamageDuration += abilityToPropagate.DamageDuration;
         weapon.ModifierDamageRange += abilityToPropagate.DamageRange;
         weapon.ModifierDamageValue += abilityToPropagate.DamageValue;
+        weapon.ModifierMaxBombAmount += abilityToPropagate.MaxBombAmountIncrease;
 
     }
     public void TakeDamage(int damage)

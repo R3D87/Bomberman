@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseBomb : BaseObject
 {
-
+    public event Action OnBombExplosion;
 
     delegate int SimpleMethod(int x);
     SimpleMethod method;
@@ -13,14 +13,10 @@ public class BaseBomb : BaseObject
     int Damage = 1;
     float Timer = 1;
     int DetonationTime = 3;
+   
     public ExplosionEffect effect;
+ 
 
-    private void Start()
-    {
-        method += n => n - 1;
-        method += n => n + 1;
-
-    }
 
     void PropateExplotionInDirecion(int x, int y,  int limit)
     {
@@ -61,7 +57,8 @@ public class BaseBomb : BaseObject
 
         int limit =0;
         PropateExplotionInDirecion(0, 0,  limit);
-
+        if(OnBombExplosion!=null)
+            OnBombExplosion();
 
 
         Debug.DrawRay(transform.position, 1.5f*Vector3.left, Color.red,int.MaxValue);

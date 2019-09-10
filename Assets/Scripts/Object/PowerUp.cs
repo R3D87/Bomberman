@@ -6,15 +6,18 @@ using UnityEngine;
 public class PowerUp : BaseObject, IDamage, IAbility { 
     int MaxHealth = 1;
     int Health;
-    int damageRange=1;
+    //-Interface
+    int damageRange;
     int damageValue;
     int damageDuration;
     int healthIncrease;
-    //-Interface
+    int maxBombAmountIncrease=1;
+ 
     public int DamageRange { get { return damageRange; } }
     public int DamageValue { get { return damageValue; } }
     public int DamageDuration { get { return damageDuration; } }
     public int HealthIncrease { get { return healthIncrease; } }
+    public int MaxBombAmountIncrease { get { return maxBombAmountIncrease; } }
     //- Interface
     private void Start()
     {

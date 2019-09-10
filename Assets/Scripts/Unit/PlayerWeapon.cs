@@ -10,51 +10,52 @@ public class PlayerWeapon : MonoBehaviour,IWeaponFire
     int modifierDamageRange;
     int modifierDamageValue;
     int modifierDamageDuration;
- 
+    int modifierMaxBombAmount;
+
     //-Interface
     public int ModifierDamageRange { get { return modifierDamageRange; } set {  modifierDamageRange = value; } }
     public int ModifierDamageValue { get { return modifierDamageValue; } set { modifierDamageValue = value; } }
     public int ModifierDamageDuration { get { return modifierDamageDuration; } set { modifierDamageDuration = value; }  }
-   
+    public int ModifierMaxBombAmount { get { return modifierMaxBombAmount; } set { modifierMaxBombAmount = value; MaxBombAmount += value;  } }
+
     //- Interface
 
 
-    [SerializeField]
-    float spawnRate = 1;
-    float nextFireTime = 0;
+  
+  
+    int MaxBombAmount = 1;
+    int CurrentBombAmount=0; 
     
-    private void Start()
-    {
-        
-    }
-    private void Update()
-    {
-        
-    }
     bool CanSpawnBomb()
     {
-        return Time.time >= nextFireTime;
+        return MaxBombAmount > CurrentBombAmount;
     }
-    void SpawnBomb()
+
+    void DecreasBombAmountAferExplosion()
     {
-        nextFireTime = Time.time + spawnRate;
-      
+        CurrentBombAmount--;
+    }
+    void IncreaseBombAmountAfterSpawn()
+    {
+        CurrentBombAmount++;
     }
 
     public void Spawn(BaseUnit unit,BaseTile baseTile)
     {
-       BaseBomb bombInst = Instantiate(bomb, unit.transform.position, Quaternion.identity);
-        InitBomb(ref bombInst, baseTile);
-
-
-
+        if (CanSpawnBomb())
+        {
+            BaseBomb bombInst = Instantiate(bomb, unit.transform.position, Quaternion.identity);
+            InitBomb(ref bombInst, baseTile);
+            bombInst.OnBombExplosion += DecreasBombAmountAferExplosion;
+            IncreaseBombAmountAfterSpawn();
+        }
     }
+
     void InitBomb(ref BaseBomb bombToInit, BaseTile tile )
     {
         bombToInit.tile = tile;
         tile.AddObjectToTile(bombToInit);
         bombToInit.modifierProperties(ModifierDamageRange, ModifierDamageDuration, ModifierDamageValue);
-
     }
 
 }
