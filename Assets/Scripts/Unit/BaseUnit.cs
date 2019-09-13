@@ -17,7 +17,7 @@ public class BaseUnit : MonoBehaviour {
     protected Vector2Int coord;
     protected int MaxHealth = 5;
     protected int Health;
-
+    protected float MoveDuration = 0.5f;
 
   
     private void Start()
@@ -57,7 +57,7 @@ public class BaseUnit : MonoBehaviour {
         Debug.Log(powerUp.GetComponent<IAbility>().HealthIncrease);
         Debug.Log("Have PowerUp");
     }
-    BaseTile GetNeigbourInDirection(int xDir, int yDir)
+    protected BaseTile GetNeigbourInDirection(int xDir, int yDir)
     {
         return tile.GetNeigbourInDirection(xDir, yDir);
 
@@ -69,12 +69,13 @@ public class BaseUnit : MonoBehaviour {
             Move(xDir, yDir);
         }
     }
+
     protected bool Move(int xDir, int yDir)
     {
         if (test==null) {
             BaseTile tempBaseTile = GetNeigbourInDirection(xDir, yDir);
             Vector3 TargetPosition = tempBaseTile.GetLocation();
-            test = StartCoroutine(SmoothMovement(TargetPosition, 0.1f));
+            test = StartCoroutine(SmoothMovement(TargetPosition, MoveDuration));
             tile.RemovUnitOnTile(this);
 
             tile = tempBaseTile;
@@ -105,7 +106,8 @@ public class BaseUnit : MonoBehaviour {
         test = null;
        
     }
-   private void OnDestroy()
+
+   virtual public void OnDestroy()
     {
         if (OnDestroyBaseUnit != null)
             OnDestroyBaseUnit(this);

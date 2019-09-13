@@ -7,7 +7,7 @@ using UnityEngine;
 {
 
     public PowerUp up;
-    int threshold = 0;
+    int threshold = 1;
     int powerUpCounter;
     bool Quit = false;
 

@@ -38,7 +38,22 @@ public class BaseTile : MonoBehaviour, IDamage {
             }
         
             return false;
+    }
 
+    public bool HasTilePowerUp()
+    {
+
+        foreach (BaseObject itemObject in baseObjects)
+        {
+
+            if (itemObject.GetType() == typeof(PowerUp))
+            {
+                return true;
+            }
+
+        }
+
+        return false;
     }
 
     virtual public bool OccupieRequest()

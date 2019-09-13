@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInput),typeof(PlayerWeapon))]
+[RequireComponent(typeof(PlayerInput),typeof(Weapon))]
 public class Player : BaseUnit, IDamage
 {
     ICharacterInput input;
     IWeaponFire weapon;
     IAbility ability;
-    
+   
     public event Action onFire;
 
- 
     private void Awake()
     {
         onFire += SpawnBomb;
-      
+        MoveDuration = 0.1f;
 
     }
 
@@ -26,7 +25,6 @@ public class Player : BaseUnit, IDamage
         weapon = GetComponent<IWeaponFire>();
     }
 
-    
     bool HasInputChanged()
     {
    
@@ -46,6 +44,7 @@ public class Player : BaseUnit, IDamage
             onFire();
         }
     }
+
     void SpawnBomb()
     {
         weapon.Spawn(this, tile);
@@ -61,6 +60,7 @@ public class Player : BaseUnit, IDamage
         weapon.ModifierMaxBombAmount += abilityToPropagate.MaxBombAmountIncrease;
 
     }
+
     public void TakeDamage(int damage)
     {
         Health -= damage;
@@ -68,6 +68,7 @@ public class Player : BaseUnit, IDamage
         if (Health == 0)
             Destroy(gameObject);
     }
+
     public override void TakePowerUp(PowerUp powerUp)
     {
         ability = powerUp.GetComponent<IAbility>();

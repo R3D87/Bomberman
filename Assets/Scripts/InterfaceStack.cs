@@ -32,4 +32,8 @@ interface IAbility
     int DamageDuration { get; }
     int HealthIncrease { get;}
     int MaxBombAmountIncrease { get; }
-}   
+}
+interface IEnemy
+{
+    void ChanceToSpawnEnemy(BaseTile tile);
+}

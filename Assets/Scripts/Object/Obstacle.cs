@@ -11,11 +11,14 @@ public class Obstacle : BaseObject, IDamage {
     int Health;
     int debug = 0;
     IPowerUp powerUp;
+    IEnemy enemy;
 
     void Start()
     {
        
         powerUp= GetComponentInParent<IPowerUp>();
+        enemy = GetComponentInParent<IEnemy>();
+
         Debug.Log(powerUp);
         Health = MaxHealth;
       
@@ -36,6 +39,7 @@ public class Obstacle : BaseObject, IDamage {
     public override void OnDestroy()
     {
         powerUp.ChanceToSpawnPowerUp(tile);
+        enemy.ChanceToSpawnEnemy(tile);
         Debug.Log("dupa");
         base.OnDestroy();
         

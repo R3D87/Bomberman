@@ -11,6 +11,7 @@ public class PlayerInput : MonoBehaviour, ICharacterInput {
     public bool Fire { get; private set; }
 
     
+    
 
     public void ReadInput()
     {
@@ -25,4 +26,5 @@ public class PlayerInput : MonoBehaviour, ICharacterInput {
     {
         ReadInput();
     }
+
 }

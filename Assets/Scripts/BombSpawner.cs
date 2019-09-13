@@ -7,7 +7,7 @@ public class BombSpawner : MonoBehaviour {
     BaseBomb bombPrefab;
 
 
-    public void Spawn(PlayerWeapon weapon, BaseTile tile)
+    public void Spawn(Weapon weapon, BaseTile tile)
     {
         
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWeapon : MonoBehaviour,IWeaponFire
+public class Weapon : MonoBehaviour,IWeaponFire
 {
 
     public BaseBomb bomb;
@@ -44,7 +44,7 @@ public class PlayerWeapon : MonoBehaviour,IWeaponFire
     {
         if (CanSpawnBomb())
         {
-            BaseBomb bombInst = Instantiate(bomb, unit.transform.position, Quaternion.identity);
+            BaseBomb bombInst = Instantiate(bomb, baseTile.transform.position, Quaternion.identity);
             InitBomb(ref bombInst, baseTile);
             bombInst.OnBombExplosion += DecreasBombAmountAferExplosion;
             IncreaseBombAmountAfterSpawn();
