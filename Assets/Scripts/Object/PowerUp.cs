@@ -12,7 +12,9 @@ public class PowerUp : BaseObject, IDamage, IAbility {
     int damageDuration;
     int healthIncrease;
     int maxBombAmountIncrease=1;
- 
+
+    public event Action OnPowerUpDestroy;
+
     public int DamageRange { get { return damageRange; } }
     public int DamageValue { get { return damageValue; } }
     public int DamageDuration { get { return damageDuration; } }
@@ -28,7 +30,10 @@ public class PowerUp : BaseObject, IDamage, IAbility {
     {
         Health -= damage;
         if (Health <= 0)
+        {
+            OnPowerUpDestroy();
             Destroy(gameObject);
+        }
     }
 
 

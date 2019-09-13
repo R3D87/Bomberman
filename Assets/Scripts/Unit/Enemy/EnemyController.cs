@@ -36,21 +36,34 @@ public class EnemyController : MonoBehaviour, ICharacterInput
         StartCoroutine(MakeDecision());
     }
     List<BaseTile> TilesToCheck = new List<BaseTile>();
+
     bool Movement()
     {
-      
+        Vector2Int Input = new Vector2Int(Horizontal,Vertical);
+
         int RND = Random.Range(0, 4);
-        int[] Direction = InputPreset[RND];
+       
         int NumberOfMovePosibilities;
         TilesToCheck = HarvestData();
         
         TilesToCheck = RemoveTemporaryBlockedTiles(TilesToCheck);
         NumberOfMovePosibilities = TilesToCheck.Count;
-        
-       // Vector2Int Input = new Vector2Int();
-            Vector2Int Input = ConvertTileToInput(TilesToCheck[Random.Range(0,TilesToCheck.Count)]);
+
+        if (NumberOfMovePosibilities == 1)
+        {
+            Input = ConvertTileToInput(TilesToCheck[0]);
             Horizontal = Input.x;
             Vertical = Input.y;
+            return true;
+        }
+        Vector2Int PrevInput = Input * -1;
+        BaseTile prevTile = enemy.GetTileInDirection(PrevInput.x, PrevInput.y);
+        Debug.Log("prev: "+prevTile);
+        TilesToCheck.Remove(prevTile);
+
+         Input = ConvertTileToInput(TilesToCheck[Random.Range(0,TilesToCheck.Count)]);
+         Horizontal = Input.x;
+         Vertical = Input.y;
 
         return true;
    
@@ -143,18 +156,25 @@ public class EnemyController : MonoBehaviour, ICharacterInput
     }
     IEnumerator MakeDecision()
     {
-       
+        bool skipFirstStep = true; ;
         while (true)
         {
             Debug.Log("---");
-            Shoot();
-            Movement();
+        
+                Movement();
+            if (!skipFirstStep)
+                Shoot();
+                     skipFirstStep = false;
+            
             //  ReadInput();
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
         }
         
 
     }
- 
 
+    public void ReadInput()
+    {
+        throw new System.NotImplementedException();
+    }
 }

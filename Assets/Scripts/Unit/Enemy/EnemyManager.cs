@@ -11,7 +11,7 @@ public class EnemyManager : MonoBehaviour,IEnemy {
     int threshold = 0;
     int powerUpCounter;
     bool Quit = false;
-    int MaxEnemyOnBoard = 3;
+    int MaxEnemyOnBoard = 1;
     int EnemyCounter = 0;
 
     void DecreaseEnemies()
