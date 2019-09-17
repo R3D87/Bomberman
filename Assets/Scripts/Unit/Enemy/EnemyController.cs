@@ -124,7 +124,7 @@ public class EnemyController : MonoBehaviour, ICharacterInput
 
         // RemovePermanentBlockedTiles();
 
-        int NumberOfMovePosibilities = 0;
+       // int NumberOfMovePosibilities = 0;
        // if (NumberOfMovePosibilities == 1)
            // return TilesToInvestigate[0];
 
@@ -151,7 +151,7 @@ public class EnemyController : MonoBehaviour, ICharacterInput
     {
         List<BaseTile> TilesToInvestigate = new List<BaseTile>();
         TilesToInvestigate = HarvestData();
-        Fire = HasBombToSpawnOpportunity(TilesToInvestigate);
+        Fire= HasBombToSpawnOpportunity(TilesToInvestigate);
 
     }
     IEnumerator MakeDecision()

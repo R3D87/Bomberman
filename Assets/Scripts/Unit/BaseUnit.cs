@@ -12,7 +12,7 @@ public class BaseUnit : MonoBehaviour {
     public delegate void DestroyBaseUnit(BaseUnit baseUnit);
     public event DestroyBaseUnit OnDestroyBaseUnit;
 
-    Coroutine test;
+    Coroutine MoveProgressing;
     protected BaseTile tile;
     protected Vector2Int coord;
     protected int MaxHealth = 5;
@@ -72,10 +72,10 @@ public class BaseUnit : MonoBehaviour {
 
     protected bool Move(int xDir, int yDir)
     {
-        if (test==null) {
+        if (MoveProgressing==null) {
             BaseTile tempBaseTile = GetNeigbourInDirection(xDir, yDir);
             Vector3 TargetPosition = tempBaseTile.GetLocation();
-            test = StartCoroutine(SmoothMovement(TargetPosition, MoveDuration));
+            MoveProgressing = StartCoroutine(SmoothMovement(TargetPosition, MoveDuration));
             tile.RemovUnitOnTile(this);
 
             tile = tempBaseTile;
@@ -103,7 +103,7 @@ public class BaseUnit : MonoBehaviour {
    
             yield return null;
         }
-        test = null;
+        MoveProgressing = null;
        
     }
 

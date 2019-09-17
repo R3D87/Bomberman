@@ -9,7 +9,7 @@
 
 interface ICharacterInput
 {
-    void ReadInput();
+   
     int Horizontal { get;  }
     int Vertical { get; }
     bool Fire { get;  }

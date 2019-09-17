@@ -8,11 +8,13 @@ public class Player : BaseUnit, IDamage
     ICharacterInput input;
     IWeaponFire weapon;
     IAbility ability;
-   
+    
     public event Action onFire;
 
     private void Awake()
     {
+        MaxHealth = 10;
+        Health = MaxHealth;
         onFire += SpawnBomb;
         MoveDuration = 0.1f;
 
@@ -64,8 +66,8 @@ public class Player : BaseUnit, IDamage
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        Debug.Log(damage);
-        if (Health == 0)
+        Debug.Log("Player Damage:"+damage);
+        if (Health <= 0)
             Destroy(gameObject);
     }
 

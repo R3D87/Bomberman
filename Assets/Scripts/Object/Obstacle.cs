@@ -19,7 +19,7 @@ public class Obstacle : BaseObject, IDamage {
         powerUp= GetComponentInParent<IPowerUp>();
         enemy = GetComponentInParent<IEnemy>();
 
-        Debug.Log(powerUp);
+      
         Health = MaxHealth;
       
         
@@ -40,7 +40,7 @@ public class Obstacle : BaseObject, IDamage {
     {
         powerUp.ChanceToSpawnPowerUp(tile);
         enemy.ChanceToSpawnEnemy(tile);
-        Debug.Log("dupa");
+       
         base.OnDestroy();
         
     }

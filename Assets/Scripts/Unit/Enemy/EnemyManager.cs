@@ -4,28 +4,23 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour,IEnemy {
 
-
-
-
     public BaseEnemy Enemy;
-    int threshold = 0;
-    int powerUpCounter;
+    float threshold = 0.3f;
+   
     bool Quit = false;
-    int MaxEnemyOnBoard = 1;
+
+    public  int MaxEnemyOnBoard = 3;
     int EnemyCounter = 0;
 
     void DecreaseEnemies()
     {
         EnemyCounter--;
     }
-        bool HasMaxEnemyOnBoard()
-    {
-        return MaxEnemyOnBoard <= EnemyCounter;
-    }
+
     bool HasSpawnEnemy()
     {
-        int Rnd = Random.Range(0, 1);
-        return (threshold <= Rnd) && !HasMaxEnemyOnBoard();
+        float Rnd = Random.Range(0, 1f);
+        return (threshold >=Rnd) && MaxEnemyOnBoard > EnemyCounter;
 
     }
     void SpawnEnemy(BaseTile baseTile)
@@ -34,6 +29,7 @@ public class EnemyManager : MonoBehaviour,IEnemy {
         BaseEnemy Inst = Instantiate(Enemy, baseTile.transform.position, Quaternion.identity, gameObject.transform);
         baseTile.AddUnitOnTile(Inst);
         Inst.onEnemyDestroy += DecreaseEnemies;
+       
     }
 
     public void ChanceToSpawnEnemy(BaseTile tile)

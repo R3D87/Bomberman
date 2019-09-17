@@ -23,6 +23,7 @@ public class PowerUp : BaseObject, IDamage, IAbility {
     //- Interface
     private void Start()
     {
+
         Health = MaxHealth;
     }
 
@@ -32,7 +33,7 @@ public class PowerUp : BaseObject, IDamage, IAbility {
         if (Health <= 0)
         {
             OnPowerUpDestroy();
-            Destroy(gameObject);
+            Destroy(gameObject,0.1f);
         }
     }
 

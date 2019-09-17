@@ -7,7 +7,7 @@ using UnityEngine;
 {
 
     public PowerUp up;
-    float threshold = 0.8f;
+    float threshold = 0.3f;
     int powerUpCounter=0;
     int MaxPowerUpOnBoard = 3;
     bool Quit = false;
@@ -18,8 +18,8 @@ using UnityEngine;
 
     bool HasSpawnPowerUp()
     {
-        float Rnd = Random.Range(0, 1);
-        return (threshold <= Rnd) && MaxPowerUpOnBoard >= powerUpCounter;
+        float Rnd = Random.Range(0, 1f);
+        return (threshold >= Rnd) && MaxPowerUpOnBoard > powerUpCounter;
         
     }
     void SpawnPowerUp(BaseTile baseTile)
@@ -27,8 +27,9 @@ using UnityEngine;
         PowerUp Inst = Instantiate(up, baseTile.transform.position, Quaternion.identity, gameObject.transform);
         baseTile.AddObjectToTile(Inst);
         Inst.OnPowerUpDestroy += DecreasePowerUpCounter;
+        
         powerUpCounter++;
-
+        Debug.Log("PowerUp");
 
     }
     void DecreasePowerUpCounter()
@@ -38,6 +39,7 @@ using UnityEngine;
 
     public void ChanceToSpawnPowerUp( BaseTile tile)
     {
+        
         if (HasSpawnPowerUp() && !Quit  )
             SpawnPowerUp(tile);
     }

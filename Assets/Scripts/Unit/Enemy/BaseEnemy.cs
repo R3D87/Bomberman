@@ -13,6 +13,7 @@ public class BaseEnemy : BaseUnit, IDamage
     void Start()
     {
         MaxHealth = 2;
+        Health = MaxHealth;
         onFire += SpawnBomb;
         input = GetComponent<ICharacterInput>();
         weapon = GetComponent<IWeaponFire>();
@@ -34,6 +35,10 @@ public class BaseEnemy : BaseUnit, IDamage
     {
 
         return input.Horizontal != 0 || input.Vertical != 0;
+    }
+    public bool FireExectuting(bool inputFire )
+    {
+        return inputFire;
     }
    
     // Update is called once per frame
