@@ -142,9 +142,10 @@ public class Translator : MonoBehaviour {
             CollectData(paint, ConvertCoordTo2D(i));
             //  print(i+ " "+x+" "+y);
         }
-        
-        DeployGameEntity(PaintType.Exit, ref boxPaintCoord);
-        DeployGameEntity(PaintType.Player, ref emptyPaintCoord);
+        if(HaveObstaclesOnBoard())
+            DeployGameEntity(PaintType.Exit, ref boxPaintCoord);
+        if (HaveEmptyTileOnBoard())
+            DeployGameEntity(PaintType.Player, ref emptyPaintCoord);
     
 
         for (int i = 0; i < width * height; i++)

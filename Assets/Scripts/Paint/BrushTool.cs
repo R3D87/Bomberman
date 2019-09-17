@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class BrushTool : MonoBehaviour
 {
     // Use this for initialization
+    public static event Action onPlayerPaint;
+
     GameObject Brush;
     GameObject Source;
     GameBuilder gameBuilder;
@@ -15,12 +18,15 @@ public class BrushTool : MonoBehaviour
 
     void Start()
     {
+        UIScript ui = FindObjectOfType<UIScript>();
         maskCanvas = LayerMask.GetMask("Paintable");
         maskPicker = LayerMask.GetMask("Source");
         isDragActive = new bool[] { false, false };
         downInPreviousFrame = new bool[] { false, false};
         gameBuilder = gameObject.GetComponent<GameBuilder>() ;
-        
+        onPlayerPaint += ui.CheckChangeOnPaint;
+
+
     }
     Vector3 GetPosition(RaycastHit hit)
     {
@@ -108,7 +114,8 @@ public class BrushTool : MonoBehaviour
             Paint();
         else
             Erase();
-
+        if(onPlayerPaint!=null)
+            onPlayerPaint();
 
     }
 

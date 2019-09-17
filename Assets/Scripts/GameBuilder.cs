@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 using UnityEngine;
 
 
@@ -26,6 +26,7 @@ public class GameBuilder : MonoBehaviour {
 
     private void Awake()
     {
+       
        OnPaintingRandomBoard += FillBoard;
     }
     public void PaintingRandomBoard()
@@ -63,6 +64,7 @@ public class GameBuilder : MonoBehaviour {
                 }
             }
         }
+        UIScript.OnConditionCheck += IsFulFillStartGameCondition;
 
     }
 
@@ -95,6 +97,27 @@ public class GameBuilder : MonoBehaviour {
 
         }
 
+    }
+
+    bool IsFulFillStartGameCondition()
+    {
+        bool isBoxOnBoard = false;
+        bool isEmptyTileOnBoard = false;
+       
+        for (int i = 0; i < width * heigh; i++)
+        {
+            int x = i / width;
+            int y = i % width;
+            if (Paint[x, y].GetComponent<PaintTile>().PaintTileType == PaintType.Box)
+            {
+                isBoxOnBoard = true;
+            }
+            if (Paint[x, y].GetComponent<PaintTile>().PaintTileType == PaintType.Empty)
+            {
+                isEmptyTileOnBoard = true;
+            }
+        }
+        return isBoxOnBoard && isEmptyTileOnBoard;
     }
     void FillBoard()
     {
