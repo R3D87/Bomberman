@@ -120,7 +120,14 @@ public class Translator : MonoBehaviour {
         }
 
     }
-
+    bool HaveObstaclesOnBoard()
+    {
+        return boxPaintCoord.Count != 0;
+    }
+    bool HaveEmptyTileOnBoard()
+    {
+        return emptyPaintCoord.Count != 0;
+    }
     void Translate()
     {
 
@@ -135,6 +142,7 @@ public class Translator : MonoBehaviour {
             CollectData(paint, ConvertCoordTo2D(i));
             //  print(i+ " "+x+" "+y);
         }
+        
         DeployGameEntity(PaintType.Exit, ref boxPaintCoord);
         DeployGameEntity(PaintType.Player, ref emptyPaintCoord);
     

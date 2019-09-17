@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameMode : MonoBehaviour {
 
+    static public GameMode GameModeInstance;
+
 
     GameObject gameBoardObject;
     public GameObject gameBuilderObject;
@@ -11,8 +13,26 @@ public class GameMode : MonoBehaviour {
     GameBoard gameBoard;
 
     GameBuilder gameBuilder;
- 
 
+    private void Awake()
+    {
+        MakeSingleton();
+        UIScript.OnQuickStart += DebugBuildGame;
+        UIScript.OnClickPresetLevel+= RequestForPaintedBoard;
+        UIScript.OnStartAfterPreparedLevel+= OnlyTranslation;
+    }
+    void MakeSingleton()
+    {
+        if (GameModeInstance != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            GameModeInstance = this;
+            DontDestroyOnLoad(this);
+        }
+    }
 
     // Use this for initialization
     void Start()
@@ -44,6 +64,11 @@ public class GameMode : MonoBehaviour {
         AttachTranslatorComponent();
         Invoke("StartedTranslation", 0.01f);
       
+    }
+    void OnlyTranslation()
+    {
+        AttachTranslatorComponent();
+        Invoke("StartedTranslation", 0.01f);
     }
     private void RequestForPaintedBoard()
     {
