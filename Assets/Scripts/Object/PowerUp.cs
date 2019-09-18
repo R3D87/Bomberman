@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PowerUp : BaseObject, IDamage, IAbility { 
     int MaxHealth = 1;
     int Health;

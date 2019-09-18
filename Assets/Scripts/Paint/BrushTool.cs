@@ -6,7 +6,7 @@ using System;
 public class BrushTool : MonoBehaviour
 {
     // Use this for initialization
-    public static event Action onPlayerPaint;
+    public static event Action onPlayerPaint = null;
 
     GameObject Brush;
     GameObject Source;
@@ -16,6 +16,11 @@ public class BrushTool : MonoBehaviour
     bool[] isDragActive, downInPreviousFrame;
     PaintType BrushType;
 
+    private void Awake()
+    {
+        gameBuilder = gameObject.GetComponent<GameBuilder>();
+    }
+
     void Start()
     {
         UIScript ui = FindObjectOfType<UIScript>();
@@ -23,7 +28,7 @@ public class BrushTool : MonoBehaviour
         maskPicker = LayerMask.GetMask("Source");
         isDragActive = new bool[] { false, false };
         downInPreviousFrame = new bool[] { false, false};
-        gameBuilder = gameObject.GetComponent<GameBuilder>() ;
+    
         onPlayerPaint += ui.CheckChangeOnPaint;
 
 
@@ -70,7 +75,8 @@ public class BrushTool : MonoBehaviour
 
                 Destroy(hit.collider.gameObject);
 
-               
+                if (onPlayerPaint != null)
+                    onPlayerPaint();
             }
 
         }
@@ -81,7 +87,8 @@ public class BrushTool : MonoBehaviour
             Source = hit.collider.gameObject;
             
             Brush = Source.GetComponent<ObjectSource>().source;
-           
+            if (onPlayerPaint != null)
+                onPlayerPaint();
         }
     }
     void Erase()
@@ -105,7 +112,8 @@ public class BrushTool : MonoBehaviour
             Ink.GetComponent<PaintTile>().PaintTileType = brushType;
             gameBuilder.AddElemntToPaint((int)PositionInArray.x, (int)PositionInArray.y, Ink);
             Destroy(hit.collider.gameObject);
-
+            if (onPlayerPaint != null)
+                onPlayerPaint();
         }
     }
     void OnDragging(int i)
@@ -114,8 +122,8 @@ public class BrushTool : MonoBehaviour
             Paint();
         else
             Erase();
-        if(onPlayerPaint!=null)
-            onPlayerPaint();
+       
+          
 
     }
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using System;
-
+using UnityEngine.SceneManagement;
 
 public class UIScript : MonoBehaviour {
 
@@ -15,17 +15,36 @@ public class UIScript : MonoBehaviour {
     public static event Action OnChangePaint;
     public static event Func<bool> OnConditionCheck;
 
-   
+    public static UIScript InstanceUI;
+
 
     public Text winText;
-   public GameObject MainMenu;
-   public GameObject LevelMaker;
-    Button StartGameCustom; 
+    public GameObject MainMenu;
+    public GameObject LevelMaker;
+    public Button StartGameCustom;
+
+    void MakeSingleton()
+    {
+        if (InstanceUI != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            InstanceUI = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     private void Awake()
     {
-        StartGameCustom = GetComponentInChildren<Button>();
+        MakeSingleton();
+    }
+    
+    private void Start()
+    {
+
+      
         Exit.onFoundPlayer += ShowWinText;
-        
     }
     void ShowWinText()
     {
@@ -64,11 +83,31 @@ public class UIScript : MonoBehaviour {
             if (OnConditionCheck())
             {
                 StartGameCustom.interactable = true;
+
+                Debug.Log("Condition true");
             }
             else
             {
+
+                Debug.Log("Condition false");
                 StartGameCustom.interactable = false;
             }
         }
     }
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    public void ResetCurrentScene()
+    {
+        int scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        StartGameCustom.interactable = false;
+        MakeLevel();
+
+    }
+    
 }
+   
+

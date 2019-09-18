@@ -20,22 +20,19 @@ public class GameBuilder : MonoBehaviour {
     GameObject[,] Paint;
 
 
-    TileTypes tileTypes;
 
-    public  event Action OnPaintingRandomBoard = delegate { } ;
 
-    private void Awake()
-    {
-       
-       OnPaintingRandomBoard += FillBoard;
-    }
+    public event Action OnPaintingRandomBoard; 
+
+  
     public void PaintingRandomBoard()
     {
         OnPaintingRandomBoard();
     }
     void Start()
     {
-        
+        OnPaintingRandomBoard += FillBoard;
+
         width = userWidth;
         heigh = userHeigh;
 
@@ -180,7 +177,16 @@ public class GameBuilder : MonoBehaviour {
     {
         Paint[x, y] = gameObject;
     }
-
+    /*  private void OnDisable()
+      {
+          OnPaintingRandomBoard -= FillBoard;
+          UIScript.OnConditionCheck -= IsFulFillStartGameCondition;
+      }*/
+    private void OnDestroy()
+    {
+        OnPaintingRandomBoard -= FillBoard;
+        UIScript.OnConditionCheck -= IsFulFillStartGameCondition;
+    }
 
 
 }
