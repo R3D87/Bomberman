@@ -39,8 +39,7 @@ public class PowerUp : BaseObject, IDamage, IAbility {
         }
     }
     public override void OnDestroy()
-    {
-        OnPowerUpDestroy = null;
+    { 
         base.OnDestroy();
     }
 

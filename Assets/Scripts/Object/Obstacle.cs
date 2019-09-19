@@ -32,7 +32,7 @@ public class Obstacle : BaseObject, IDamage {
         Debug.Log("Obstacle: " + debug);
         if (Health <= 0)
         {
-            SpawnAfterDestroy();
+           
             Destroy(gameObject);
         }
     }
@@ -44,10 +44,11 @@ public class Obstacle : BaseObject, IDamage {
     }
     public override void OnDestroy()
     {
-
-
+        Invoke("SpawnAfterDestroy",1f);
+        SpawnAfterDestroy();
         base.OnDestroy();
     }
+
 
 
 }
