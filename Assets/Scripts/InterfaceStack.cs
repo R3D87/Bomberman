@@ -37,3 +37,7 @@ interface IEnemy
 {
     void ChanceToSpawnEnemy(BaseTile tile);
 }
+interface ISpawnEntity
+{
+    void SpawnEntiy(BaseTile tile);
+}

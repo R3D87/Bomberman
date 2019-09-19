@@ -99,7 +99,7 @@ public class BaseBomb : BaseObject, IDamage {
         {
             DoOnce = false;
             Explotion();
-            Debug.Log("timer:" + Timer);
+          //  Debug.Log("timer:" + Timer);
         }
     }
     void Explotion()

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour,IEnemy {
+public class EnemyManager : MonoBehaviour,IEnemy, ISpawnEntity
+{
 
     public BaseEnemy Enemy;
     float threshold = 0.3f;
@@ -23,8 +24,10 @@ public class EnemyManager : MonoBehaviour,IEnemy {
         return (threshold >=Rnd) && MaxEnemyOnBoard > EnemyCounter;
 
     }
-    void SpawnEnemy(BaseTile baseTile)
+    void  SpawnEnemy(BaseTile baseTile)
     {
+        
+       
         if (baseTile != null)
         {
             EnemyCounter++;
@@ -32,15 +35,23 @@ public class EnemyManager : MonoBehaviour,IEnemy {
             baseTile.AddUnitOnTile(Inst);
             Inst.onEnemyDestroy += DecreaseEnemies;
         }
+        
     }
 
     public void ChanceToSpawnEnemy(BaseTile tile)
     {
+        Debug.Log("Intercace Enemy Manager");
         if (HasSpawnEnemy() && !Quit)
+            
             SpawnEnemy(tile);
     }
     private void OnApplicationQuit()
     {
         Quit = true;
+    }
+
+    public void SpawnEntiy(BaseTile tile)
+    {
+        Debug.Log("Enemy Manager");
     }
 }

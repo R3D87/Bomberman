@@ -157,5 +157,6 @@ public class BaseTile : MonoBehaviour, IDamage {
                 item.GetComponent<IDamage>().TakeDamage(damage);
             }
         }
+         
     }
 }

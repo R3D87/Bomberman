@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 
@@ -10,6 +11,7 @@ public class BaseObject : MonoBehaviour {
     public delegate void DestroyBaseObject(BaseObject baseObject);
     public event DestroyBaseObject OnDestroyBaseObject;
 
+   
 
     
     protected  Vector2Int coord;

@@ -6,20 +6,23 @@ using UnityEngine;
 public class Obstacle : BaseObject, IDamage {
 
 
-    
+    public event Action<BaseTile> OnDestroyObstacle;
     int MaxHealth = 1;
     int Health;
     int debug = 0;
     IPowerUp powerUp;
     IEnemy enemy;
+    FactoryEntities factory;
+    private bool ExitApplication = false;
 
     void Start()
     {
-       
-        powerUp= GetComponentInParent<IPowerUp>();
+        factory = GetComponentInParent<FactoryEntities>();
+        OnDestroyObstacle += factory.SpawnOpportunity;
+        powerUp = GetComponentInParent<IPowerUp>();
         enemy = GetComponentInParent<IEnemy>();
+       
 
-      
         Health = MaxHealth;
       
         
@@ -32,23 +35,27 @@ public class Obstacle : BaseObject, IDamage {
         Debug.Log("Obstacle: " + debug);
         if (Health <= 0)
         {
-           
-            Destroy(gameObject);
+            if (OnDestroyObstacle != null)
+                OnDestroyObstacle(tile);
+            Destroy(gameObject, 0.1f); 
         }
     }
 
-    void SpawnAfterDestroy()
+    void SpawnAfterDestroy(BaseTile tile)
     {
-        powerUp.ChanceToSpawnPowerUp(tile);
-        enemy.ChanceToSpawnEnemy(tile);
+        Debug.Log("Destroy");
+     
+      powerUp.ChanceToSpawnPowerUp(tile);
+       enemy.ChanceToSpawnEnemy(tile);
+        
     }
     public override void OnDestroy()
     {
-        Invoke("SpawnAfterDestroy",1f);
-        SpawnAfterDestroy();
+       
         base.OnDestroy();
+
+
     }
-
-
+    
 
 }

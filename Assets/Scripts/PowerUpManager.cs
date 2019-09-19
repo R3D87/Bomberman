@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
- public class PowerUpManager: MonoBehaviour, IPowerUp 
+ public class PowerUpManager: MonoBehaviour, IPowerUp, ISpawnEntity
 {
 
     public PowerUp up;
@@ -24,6 +24,7 @@ using UnityEngine;
     }
     void SpawnPowerUp(BaseTile baseTile)
     {
+        
         if (baseTile != null)
         {
             PowerUp Inst = Instantiate(up, baseTile.transform.position, Quaternion.identity);
@@ -41,13 +42,18 @@ using UnityEngine;
 
     public void ChanceToSpawnPowerUp( BaseTile tile)
     {
-        
+        Debug.Log(" Interface PowerUp");
         if (HasSpawnPowerUp() && !Quit  )
             SpawnPowerUp(tile);
     }
     private void OnApplicationQuit()
     {
         Quit = true;
+    }
+
+    public void SpawnEntiy(BaseTile tile)
+    {
+        Debug.Log("PowerUp Manager");
     }
 }
 
