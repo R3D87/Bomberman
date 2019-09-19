@@ -12,6 +12,7 @@ public class BaseBomb : BaseObject, IDamage {
     int Damage = 1;
     float Timer = 1;
     int DetonationTime = 3;
+    bool DoOnce = true;
    
     public ExplosionEffect effect;
 
@@ -51,11 +52,11 @@ public class BaseBomb : BaseObject, IDamage {
         
         if (tileToCheck.GetType() == typeof(Wall))
             return;
-
         ExplosionEffect SFX = Instantiate(effect, tileToCheck.transform.position, Quaternion.identity);
         tileToCheck.AddObjectToTile(SFX);
-        tileToCheck.GetComponent<IDamage>().TakeDamage(Damage);
 
+        tileToCheck.GetComponent<IDamage>().TakeDamage(Damage);
+     
         if (idx == -1)
             return;
 
@@ -94,9 +95,10 @@ public class BaseBomb : BaseObject, IDamage {
     private void Update()
     {
 
-        if (IsCountdownFinished(DetonationTime))
+        if (IsCountdownFinished(DetonationTime) && DoOnce)
         {
-            Destroy(gameObject, 0.1f);
+            DoOnce = false;
+            Explotion();
             Debug.Log("timer:" + Timer);
         }
     }
@@ -104,7 +106,7 @@ public class BaseBomb : BaseObject, IDamage {
     {
         
         int limit = 0;
-      PropateExplotion(0, 0, limit, -1);
+        PropateExplotion(0, 0, limit, -1);
         for (int i = 0; i < 4; i++)
         {
             PropateExplotion(simpleMethodForHeight[i](), simpleMethodForWidth[i](), limit, i);
@@ -120,11 +122,12 @@ public class BaseBomb : BaseObject, IDamage {
         Debug.DrawRay(transform.position, Vector3.up, Color.red, int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.down, Color.red, int.MaxValue);
 
-       
+        Destroy(gameObject, 0.1f);
     }
    override public void OnDestroy()
     {
-        Explotion();
+       
+   
         base.OnDestroy();
       
     }

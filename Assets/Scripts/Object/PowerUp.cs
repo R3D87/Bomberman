@@ -35,7 +35,13 @@ public class PowerUp : BaseObject, IDamage, IAbility {
         {
             OnPowerUpDestroy();
             Destroy(gameObject,0.1f);
+           
         }
+    }
+    public override void OnDestroy()
+    {
+        OnPowerUpDestroy = null;
+        base.OnDestroy();
     }
 
 

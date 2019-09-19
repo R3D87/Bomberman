@@ -74,6 +74,9 @@ public class BaseUnit : MonoBehaviour {
     {
         if (MoveProgressing==null) {
             BaseTile tempBaseTile = GetNeigbourInDirection(xDir, yDir);
+            if (tempBaseTile == null)
+                return false;
+
             Vector3 TargetPosition = tempBaseTile.GetLocation();
             MoveProgressing = StartCoroutine(SmoothMovement(TargetPosition, MoveDuration));
             tile.RemovUnitOnTile(this);
@@ -111,5 +114,6 @@ public class BaseUnit : MonoBehaviour {
     {
         if (OnDestroyBaseUnit != null)
             OnDestroyBaseUnit(this);
+      
     }
 }

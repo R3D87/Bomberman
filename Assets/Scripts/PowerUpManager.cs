@@ -24,13 +24,15 @@ using UnityEngine;
     }
     void SpawnPowerUp(BaseTile baseTile)
     {
-        PowerUp Inst = Instantiate(up, baseTile.transform.position, Quaternion.identity, gameObject.transform);
-        baseTile.AddObjectToTile(Inst);
-        Inst.OnPowerUpDestroy += DecreasePowerUpCounter;
-        
-        powerUpCounter++;
-        Debug.Log("PowerUp");
+        if (baseTile != null)
+        {
+            PowerUp Inst = Instantiate(up, baseTile.transform.position, Quaternion.identity);
+            baseTile.AddObjectToTile(Inst);
+            Inst.OnPowerUpDestroy += DecreasePowerUpCounter;
 
+            powerUpCounter++;
+            Debug.Log("PowerUp");
+        }
     }
     void DecreasePowerUpCounter()
     {

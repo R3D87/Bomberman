@@ -72,5 +72,6 @@ public class BaseEnemy : BaseUnit, IDamage
     {
         onEnemyDestroy();
         base.OnDestroy();
+        onEnemyDestroy = null;
     }
 }

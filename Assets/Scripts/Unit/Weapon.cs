@@ -57,5 +57,6 @@ public class Weapon : MonoBehaviour,IWeaponFire
         tile.AddObjectToTile(bombToInit);
         bombToInit.modifierProperties(ModifierDamageRange, ModifierDamageDuration, ModifierDamageValue);
     }
+  
 
 }

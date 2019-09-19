@@ -63,6 +63,9 @@ public class BaseTile : MonoBehaviour, IDamage {
 
     virtual public void AddObjectToTile(BaseObject objectToAdd)
     {
+
+        if (objectToAdd == null)
+            return;
         baseObjects.Add(objectToAdd);
         objectToAdd.tile = this;
         objectToAdd.SetCoord(PositionOnGrid);
@@ -72,6 +75,8 @@ public class BaseTile : MonoBehaviour, IDamage {
 
     virtual public void AddUnitOnTile(BaseUnit unitToAdd)
     {
+        if (unitToAdd == null)
+            return;
         OnTakePowerUp += unitToAdd.TakePowerUp;
         unitToAdd.SetBaseTile(this);
         unitToAdd.SetCoord(PositionOnGrid);

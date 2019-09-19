@@ -24,8 +24,6 @@ public class Obstacle : BaseObject, IDamage {
       
         
     }
-    
-
 
     public void TakeDamage(int damage)
     {
@@ -33,27 +31,23 @@ public class Obstacle : BaseObject, IDamage {
         debug++;
         Debug.Log("Obstacle: " + debug);
         if (Health <= 0)
+        {
+            SpawnAfterDestroy();
             Destroy(gameObject);
+        }
     }
 
-    public override void OnDestroy()
+    void SpawnAfterDestroy()
     {
         powerUp.ChanceToSpawnPowerUp(tile);
         enemy.ChanceToSpawnEnemy(tile);
-       
-        base.OnDestroy();
-        
     }
-    // Use this for initialization
+    public override void OnDestroy()
+    {
 
 
-
-
-
-    // Update is called once per frame
-    void Update () {
-		
-	}
+        base.OnDestroy();
+    }
 
 
 }

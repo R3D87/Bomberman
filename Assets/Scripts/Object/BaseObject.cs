@@ -32,10 +32,12 @@ public class BaseObject : MonoBehaviour {
     void Update () {
 		
 	}
-  virtual public void OnDestroy()
+    virtual public void OnDestroy()
     {
-        if(OnDestroyBaseObject!=null)
-        OnDestroyBaseObject(this);
         tile.RemoveObjectOnTile(this);
+
+        if (OnDestroyBaseObject!=null)
+             OnDestroyBaseObject(this);
+               
     }
 }

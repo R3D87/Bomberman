@@ -15,5 +15,10 @@ public class ExplosionEffect : BaseObject {
         if (AppearanceTime < Timer)
             Destroy(gameObject);
     }
+    public override void OnDestroy()
+    {
+
+        base.OnDestroy();
+    }
 
 }

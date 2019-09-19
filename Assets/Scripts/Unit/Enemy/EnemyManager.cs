@@ -25,11 +25,13 @@ public class EnemyManager : MonoBehaviour,IEnemy {
     }
     void SpawnEnemy(BaseTile baseTile)
     {
-        EnemyCounter++;
-        BaseEnemy Inst = Instantiate(Enemy, baseTile.transform.position, Quaternion.identity, gameObject.transform);
-        baseTile.AddUnitOnTile(Inst);
-        Inst.onEnemyDestroy += DecreaseEnemies;
-       
+        if (baseTile != null)
+        {
+            EnemyCounter++;
+            BaseEnemy Inst = Instantiate(Enemy, baseTile.transform.position, Quaternion.identity);
+            baseTile.AddUnitOnTile(Inst);
+            Inst.onEnemyDestroy += DecreaseEnemies;
+        }
     }
 
     public void ChanceToSpawnEnemy(BaseTile tile)

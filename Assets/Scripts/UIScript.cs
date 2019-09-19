@@ -35,6 +35,7 @@ public class UIScript : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
         }
     }
+
     private void Awake()
     {
         MakeSingleton();
@@ -42,8 +43,6 @@ public class UIScript : MonoBehaviour {
     
     private void Start()
     {
-
-      
         Exit.onFoundPlayer += ShowWinText;
     }
     void ShowWinText()
@@ -107,7 +106,17 @@ public class UIScript : MonoBehaviour {
         MakeLevel();
 
     }
-    
+
+    public void ResetCurrentSceneDuringGame()
+    {
+        int scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
+        StartGameCustom.interactable = false;
+        MakeLevel();
+        LevelMaker.SetActive(true);
+
+    }
+
 }
    
 
