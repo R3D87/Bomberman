@@ -11,7 +11,7 @@ public class Exit : BaseTile {
     private void Awake()
     {
         OnAddUnittOnTile += FindPlayerOnTile;
-        onFoundPlayer += FinishLevel;
+      
     }
 
 
@@ -41,12 +41,5 @@ public class Exit : BaseTile {
       
        
     }
-    void FinishLevel()
-    {
-        FindObjectOfType(typeof(Canvas));
-        Debug.Log("Done");
-        Debug.Log("Done");
-        Debug.Log("Done");
 
-    }
 }

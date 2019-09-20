@@ -17,8 +17,8 @@ public class UIScript : MonoBehaviour {
 
     public static UIScript InstanceUI;
 
-
-    public Text winText;
+    public GameObject LosePopup;
+    public GameObject WinPopup;
     public GameObject MainMenu;
     public GameObject LevelMaker;
     public Button StartGameCustom;
@@ -39,17 +39,27 @@ public class UIScript : MonoBehaviour {
     private void Awake()
     {
         MakeSingleton();
+        Player.onPlayerDestroy += ShowLosePopup;
     }
     
     private void Start()
     {
-        Exit.onFoundPlayer += ShowWinText;
-    }
-    void ShowWinText()
-    {
-       winText.gameObject.SetActive(true);
-    }
+        Exit.onFoundPlayer += ShowWinPopup;
 
+    }
+    void ShowWinPopup()
+    {
+        WinPopup.gameObject.SetActive(true);
+    }
+    public void ShowLosePopup()
+    {
+        LosePopup.gameObject.SetActive(true);
+    }
+    void HidePopups()
+    {
+        LosePopup.gameObject.SetActive(false);
+        WinPopup.gameObject.SetActive(false);
+    }
     public void StartGame()
     {
         LevelMaker.SetActive(false);
@@ -93,6 +103,7 @@ public class UIScript : MonoBehaviour {
             }
         }
     }
+
     public void QuitGame()
     {
         Application.Quit();
@@ -104,7 +115,7 @@ public class UIScript : MonoBehaviour {
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
         StartGameCustom.interactable = false;
         MakeLevel();
-
+        HidePopups();
     }
 
     public void ResetCurrentSceneDuringGame()
@@ -114,8 +125,19 @@ public class UIScript : MonoBehaviour {
         StartGameCustom.interactable = false;
         MakeLevel();
         LevelMaker.SetActive(true);
+        HidePopups();
+    }
+    public void TryAgain()
+    {
+        ResetCurrentSceneDuringGame();
+
+        Invoke("SetPreset", 0.02f);
+        Invoke("StartGameOnPreparedLevel", 0.03f);
+        Invoke("HidePopups", 0.01f);
+
 
     }
+
 
 }
    

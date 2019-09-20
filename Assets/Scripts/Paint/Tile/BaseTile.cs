@@ -142,7 +142,8 @@ public class BaseTile : MonoBehaviour, IDamage {
 
     public void TakeDamage(int damage)
     {
-        foreach (var item in baseObjects)
+        List<BaseObject> ObjectsListForTakeDamage = new List<BaseObject>(baseObjects);
+        foreach (var item in ObjectsListForTakeDamage)
         {
            
             if (item.GetComponent<IDamage>() != null)
@@ -150,7 +151,9 @@ public class BaseTile : MonoBehaviour, IDamage {
                 item.GetComponent<IDamage>().TakeDamage(damage);
             }
         }
-        foreach (var item in baseUnits)
+
+        List<BaseUnit> UnitsListForTakeDamage = new List<BaseUnit>(baseUnits);
+        foreach (var item in UnitsListForTakeDamage)
         {
             if (item.GetComponent<IDamage>() != null)
             {

@@ -111,7 +111,7 @@ public class GameMode : MonoBehaviour {
     private void OnDisable()
     {
         UIScript.OnQuickStart -= DebugBuildGame;
-        UIScript.OnClickPresetLevel -= RequestForPaintedBoard;
+       UIScript.OnClickPresetLevel -= RequestForPaintedBoard;
         UIScript.OnStartAfterPreparedLevel -= OnlyTranslation;
     }
 

@@ -24,7 +24,6 @@ public class PowerUp : BaseObject, IDamage, IAbility {
     //- Interface
     private void Start()
     {
-
         Health = MaxHealth;
     }
 
@@ -35,9 +34,9 @@ public class PowerUp : BaseObject, IDamage, IAbility {
         {
             OnPowerUpDestroy();
             Destroy(gameObject,0.1f);
-           
         }
     }
+
     public override void OnDestroy()
     { 
         base.OnDestroy();

@@ -12,7 +12,7 @@ public class BaseEnemy : BaseUnit, IDamage
     public event Action onEnemyDestroy;
     void Start()
     {
-        MaxHealth = 2;
+        MaxHealth = 10;
         Health = MaxHealth;
         onFire += SpawnBomb;
         input = GetComponent<ICharacterInput>();
@@ -20,6 +20,7 @@ public class BaseEnemy : BaseUnit, IDamage
     }
     public void TakeDamage(int damage)
     {
+        Debug.Log("Damage Enemy: "+damage +"Enemy Health: "+Health);
         Health -= damage;
         Debug.Log(damage);
         if (Health <= 0)
@@ -70,6 +71,7 @@ public class BaseEnemy : BaseUnit, IDamage
     }
     public override void OnDestroy()
     {
+       
         onEnemyDestroy();
         base.OnDestroy();
         onEnemyDestroy = null;

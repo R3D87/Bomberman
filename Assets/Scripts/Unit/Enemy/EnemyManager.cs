@@ -2,16 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyManager : MonoBehaviour,IEnemy, ISpawnEntity
+public class EnemyManager : MonoBehaviour,IEnemy
 {
-
-    public BaseEnemy Enemy;
-    float threshold = 0.3f;
-   
+    public int MaxEnemyOnBoard = 3;
+    public BaseEnemy[] Enemy;
+    float threshold = 1f;//0.3f;
+    int EnemyCounter = 0;
     bool Quit = false;
 
-    public  int MaxEnemyOnBoard = 3;
-    int EnemyCounter = 0;
+    public void ChanceToSpawnEnemy(BaseTile tile)
+    {
+        if (HasSpawnEnemy() && !Quit)
+            SpawnEnemy(tile);
+    }
+
+    void SpawnEnemy(BaseTile baseTile)
+    {
+        if (baseTile != null)
+        {
+            EnemyCounter++;
+            BaseEnemy Inst = Instantiate(RandomChosenEnemy(), baseTile.transform.position, Quaternion.identity);
+            baseTile.AddUnitOnTile(Inst);
+            Inst.onEnemyDestroy += DecreaseEnemies;
+            Debug.Log("Intercace Enemy Manager");
+        }
+    }
+
+    BaseEnemy RandomChosenEnemy()
+    {
+        int AmountOfEnemyTypes = Enemy.Length;
+        int ChosenOne = Random.Range(0, AmountOfEnemyTypes);
+        return Enemy[ChosenOne];
+    }
 
     void DecreaseEnemies()
     {
@@ -22,36 +44,12 @@ public class EnemyManager : MonoBehaviour,IEnemy, ISpawnEntity
     {
         float Rnd = Random.Range(0, 1f);
         return (threshold >=Rnd) && MaxEnemyOnBoard > EnemyCounter;
-
-    }
-    void  SpawnEnemy(BaseTile baseTile)
-    {
-        
-       
-        if (baseTile != null)
-        {
-            EnemyCounter++;
-            BaseEnemy Inst = Instantiate(Enemy, baseTile.transform.position, Quaternion.identity);
-            baseTile.AddUnitOnTile(Inst);
-            Inst.onEnemyDestroy += DecreaseEnemies;
-        }
-        
     }
 
-    public void ChanceToSpawnEnemy(BaseTile tile)
-    {
-        Debug.Log("Intercace Enemy Manager");
-        if (HasSpawnEnemy() && !Quit)
-            
-            SpawnEnemy(tile);
-    }
+
+
     private void OnApplicationQuit()
     {
         Quit = true;
-    }
-
-    public void SpawnEntiy(BaseTile tile)
-    {
-        Debug.Log("Enemy Manager");
     }
 }

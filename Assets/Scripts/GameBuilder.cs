@@ -27,11 +27,16 @@ public class GameBuilder : MonoBehaviour {
   
     public void PaintingRandomBoard()
     {
+        if(OnPaintingRandomBoard!=null)
         OnPaintingRandomBoard();
+    }
+    private void Awake()
+    {
+        OnPaintingRandomBoard += FillBoard;
     }
     void Start()
     {
-        OnPaintingRandomBoard += FillBoard;
+     
 
         width = userWidth;
         heigh = userHeigh;

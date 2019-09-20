@@ -19,10 +19,14 @@ public class BaseUnit : MonoBehaviour {
     protected int Health;
     protected float MoveDuration = 0.5f;
 
-  
-    private void Start()
+    private void Awake()
     {
         Health = MaxHealth;
+
+    }
+
+    private void Start()
+    {
         coord = tile.PositionOnGrid;
       
     }

@@ -25,6 +25,10 @@ interface IPowerUp
 {
     void ChanceToSpawnPowerUp(BaseTile tile);
 }
+interface IEnemy
+{
+    void ChanceToSpawnEnemy(BaseTile tile);
+}
 interface IAbility
 {
     int DamageRange { get; }
@@ -33,11 +37,8 @@ interface IAbility
     int HealthIncrease { get;}
     int MaxBombAmountIncrease { get; }
 }
-interface IEnemy
-{
-    void ChanceToSpawnEnemy(BaseTile tile);
-}
-interface ISpawnEntity
+
+interface IFactory
 {
     void SpawnEntiy(BaseTile tile);
 }
