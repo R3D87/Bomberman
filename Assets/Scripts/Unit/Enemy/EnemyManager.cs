@@ -6,7 +6,7 @@ public class EnemyManager : MonoBehaviour,IEnemy
 {
     public int MaxEnemyOnBoard = 3;
     public BaseEnemy[] Enemy;
-    float threshold = 1f;//0.3f;
+    float threshold = 0.75f;//0.3f;
     int EnemyCounter = 0;
     bool Quit = false;
 

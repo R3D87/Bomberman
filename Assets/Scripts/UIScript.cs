@@ -13,6 +13,7 @@ public class UIScript : MonoBehaviour {
     public static event Action OnClickPresetLevel;
     public static event Action OnStartAfterPreparedLevel;
     public static event Action OnChangePaint;
+    public static event Action OnReLoadDuringGame;
     public static event Func<bool> OnConditionCheck;
 
     public static UIScript InstanceUI;
@@ -120,6 +121,8 @@ public class UIScript : MonoBehaviour {
 
     public void ResetCurrentSceneDuringGame()
     {
+        if(OnReLoadDuringGame!=null)
+            OnReLoadDuringGame();
         int scene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(scene, LoadSceneMode.Single);
         StartGameCustom.interactable = false;

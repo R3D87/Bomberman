@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1643591661688588}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -55,7 +55,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bomb: {fileID: 114416976265032486, guid: a986e67fbabf3974388c482bff245e3d, type: 2}
-  spawnRate: 1
 --- !u!114 &114664104256764154
 MonoBehaviour:
   m_ObjectHideFlags: 1

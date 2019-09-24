@@ -10,12 +10,14 @@ public class BaseBomb : BaseObject, IDamage {
     public event Action OnBombExplosion;
     int ExplotionRange = 1;
     int Damage = 1;
-    float Timer = 1;
-    int DetonationTime = 3;
+    float Timer = 0;
+    int DetonationTime = 2;
     bool DoOnce = true;
    
     public ExplosionEffect effect;
+    private  bool Quit = false;
 
+   
     int IncreaseValue()
     {
         return  1;
@@ -29,9 +31,15 @@ public class BaseBomb : BaseObject, IDamage {
     {
         return 0;
     }
+     void ReloadScene()
+    {
+        Quit = true;
+    }
+ 
     private void Start()
     {
-         simpleMethodForHeight = new SimpleMethod[4] {
+        UIScript.OnReLoadDuringGame += ReloadScene;
+        simpleMethodForHeight = new SimpleMethod[4] {
              new SimpleMethod(ConstatntValue),
              new SimpleMethod(ConstatntValue),
              new SimpleMethod(IncreaseValue),
@@ -54,11 +62,11 @@ public class BaseBomb : BaseObject, IDamage {
             return;
         ExplosionEffect SFX = Instantiate(effect, tileToCheck.transform.position, Quaternion.identity);
         tileToCheck.AddObjectToTile(SFX);
-
+        
         tileToCheck.GetComponent<IDamage>().TakeDamage(Damage);
-     
         if (idx == -1)
             return;
+
 
         limit++;
 
@@ -66,38 +74,26 @@ public class BaseBomb : BaseObject, IDamage {
   
         
     }
-    void PropateExplotionInDirecion(int x, int y,  int limit)
-    {
-        if (limit > ExplotionRange)
-            return;
-        BaseTile tileToCheck = tile.GetNeigbourInDirection(x,y);
-       
-            
-        if (tileToCheck.GetType() == typeof(Wall))
-            return;
-        ExplosionEffect SFX = Instantiate(effect, tileToCheck.transform.position,Quaternion.identity);
-        tileToCheck.AddObjectToTile(SFX);
-        tileToCheck.GetComponent<IDamage>().TakeDamage(Damage);
 
-        limit++;
-        PropateExplotionInDirecion(x - 1, y,  limit);
-        PropateExplotionInDirecion(x + 1, y,  limit);
-        PropateExplotionInDirecion(x, y-1,  limit);
-        PropateExplotionInDirecion(x, y+1,  limit);
-      
-    }
     bool IsCountdownFinished(int detonationTime)
     {
         Timer += Time.deltaTime;
         return Timer >= detonationTime;
     }
 
+    void ExplosionExecuted()
+    {
+        DoOnce = false;
+    }
+    bool WasExplotionExecuted()
+    {
+        return DoOnce;
+    }
     private void Update()
     {
 
-        if (IsCountdownFinished(DetonationTime) && DoOnce)
+        if (IsCountdownFinished(DetonationTime) && WasExplotionExecuted())
         {
-            DoOnce = false;
             Explotion();
           //  Debug.Log("timer:" + Timer);
         }
@@ -113,23 +109,26 @@ public class BaseBomb : BaseObject, IDamage {
         }
         
       //  PropateExplotionInDirecion(0, 0,  limit);
-        if(OnBombExplosion!=null)
-            OnBombExplosion();
+      
 
 
         Debug.DrawRay(transform.position, 1.5f*Vector3.left, Color.red,int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.right, Color.red, int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.up, Color.red, int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.down, Color.red, int.MaxValue);
-
-        Destroy(gameObject, 0.1f);
+        ExplosionExecuted();
+       
     }
    override public void OnDestroy()
     {
-       
-   
+        UIScript.OnReLoadDuringGame -= ReloadScene;
+        if (!Quit)
+            Explotion();
+        if (OnBombExplosion != null)
+            OnBombExplosion();
         base.OnDestroy();
-      
+        
+
     }
 
 
@@ -140,8 +139,13 @@ public class BaseBomb : BaseObject, IDamage {
     }
 
     public void TakeDamage(int damage)
-    {
-        Destroy(gameObject, 0.1f);
+    {  
+        Destroy(gameObject,0.1f);
+    }
 
+
+    private void OnApplicationQuit()
+    {
+        Quit = true;
     }
 }

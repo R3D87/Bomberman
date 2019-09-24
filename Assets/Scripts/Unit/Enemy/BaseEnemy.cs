@@ -12,7 +12,7 @@ public class BaseEnemy : BaseUnit, IDamage
     public event Action onEnemyDestroy;
     void Start()
     {
-        MaxHealth = 10;
+        MaxHealth = 1;
         Health = MaxHealth;
         onFire += SpawnBomb;
         input = GetComponent<ICharacterInput>();
