@@ -2,29 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerInput),typeof(Weapon))]
+[RequireComponent(typeof(PlayerInput),typeof(Weapon),typeof(HealthBar))]
 public class Player : BaseUnit, IDamage
 {
     ICharacterInput input;
     IWeaponFire weapon;
     IAbility ability;
+    IHealth healthBar;
     
     public event Action onFire;
     public static event Action onPlayerDestroy;
   
     private void Awake()
     {
-        MaxHealth = 1;
+        MaxHealth = 5;
         Health = MaxHealth;
         onFire += SpawnBomb;
         MoveDuration = 0.1f;
         
     }
-
+    
     private void Start()
     {  
+        healthBar = GetComponent<IHealth>();
         input = GetComponent<ICharacterInput>();
         weapon = GetComponent<IWeaponFire>();
+
+        healthBar.MaxHealth(MaxHealth);
     }
 
     bool HasInputChanged()
@@ -63,11 +67,15 @@ public class Player : BaseUnit, IDamage
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        Debug.Log("Player Damage:"+damage);
+        healthBar.DecreasingHealth(damage);
+        Debug.Log("Damage Player: " + damage + "Player Health: " + Health);
         if (Health <= 0)
+        {
             if (onPlayerDestroy != null)
-                onPlayerDestroy();
-        Destroy(gameObject,0.1f);
+                    onPlayerDestroy();
+
+            Destroy(gameObject, 0.1f);
+        }
     }
 
     public override void TakePowerUp(PowerUp powerUp)

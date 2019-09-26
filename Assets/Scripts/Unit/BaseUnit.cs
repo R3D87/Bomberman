@@ -66,12 +66,15 @@ public class BaseUnit : MonoBehaviour {
         return tile.GetNeigbourInDirection(xDir, yDir);
 
     }
-    protected void Movement(int xDir, int yDir)
+    protected bool Movement(int xDir, int yDir)
     {
+       
         if (HasMovePremmission(xDir, yDir))
         {
-            Move(xDir, yDir);
+           return Move(xDir, yDir);
+
         }
+        return false;
     }
 
     protected bool Move(int xDir, int yDir)

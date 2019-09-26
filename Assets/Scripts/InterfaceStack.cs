@@ -42,3 +42,8 @@ interface IFactory
 {
     void SpawnEntiy(BaseTile tile);
 }
+ interface IHealth
+{
+    void MaxHealth(int health);
+    void DecreasingHealth(int decrementHealth);
+}

@@ -46,7 +46,7 @@ public class Weapon : MonoBehaviour,IWeaponFire
         {
             BaseBomb bombInst = Instantiate(bomb, baseTile.transform.position, Quaternion.identity);
             InitBomb(ref bombInst, baseTile);
-            bombInst.OnBombExplosion += DecreasBombAmountAferExplosion;
+            bombInst.OnBombExploded += DecreasBombAmountAferExplosion;
             IncreaseBombAmountAfterSpawn();
         }
     }

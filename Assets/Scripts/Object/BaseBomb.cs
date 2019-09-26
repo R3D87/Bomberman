@@ -7,7 +7,9 @@ public class BaseBomb : BaseObject, IDamage {
     delegate int SimpleMethod();
     SimpleMethod[] simpleMethodForHeight;
     SimpleMethod[] simpleMethodForWidth;
-    public event Action OnBombExplosion;
+    public event Action OnBombExploded;
+    public event Action OnBombExplotion;
+  //  public event Action On
     int ExplotionRange = 1;
     int Damage = 1;
     float Timer = 0;
@@ -39,6 +41,7 @@ public class BaseBomb : BaseObject, IDamage {
     private void Start()
     {
         UIScript.OnReLoadDuringGame += ReloadScene;
+        OnBombExplotion += Explotion;
         simpleMethodForHeight = new SimpleMethod[4] {
              new SimpleMethod(ConstatntValue),
              new SimpleMethod(ConstatntValue),
@@ -53,6 +56,8 @@ public class BaseBomb : BaseObject, IDamage {
     }
     void PropateExplotion(int x,int y, int limit,int idx)
     {
+
+        Debug.Log("X: " + x + " Y: " + y);
         if (limit >= ExplotionRange)
             return;
 
@@ -92,40 +97,42 @@ public class BaseBomb : BaseObject, IDamage {
     private void Update()
     {
 
-        if (IsCountdownFinished(DetonationTime) && WasExplotionExecuted())
+        if (IsCountdownFinished(DetonationTime) && OnBombExplotion!=null)
         {
-            Explotion();
-          //  Debug.Log("timer:" + Timer);
+            OnBombExplotion();
+            OnBombExplotion = null;
         }
     }
     void Explotion()
     {
         
         int limit = 0;
-        PropateExplotion(0, 0, limit, -1);
+      
         for (int i = 0; i < 4; i++)
         {
-            PropateExplotion(simpleMethodForHeight[i](), simpleMethodForWidth[i](), limit, i);
+           PropateExplotion(simpleMethodForHeight[i](), simpleMethodForWidth[i](), limit, i);
         }
-        
-      //  PropateExplotionInDirecion(0, 0,  limit);
-      
+        PropateExplotion(0, 0, limit, -1);
+     
+
 
 
         Debug.DrawRay(transform.position, 1.5f*Vector3.left, Color.red,int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.right, Color.red, int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.up, Color.red, int.MaxValue);
         Debug.DrawRay(transform.position, Vector3.down, Color.red, int.MaxValue);
-        ExplosionExecuted();
+     
        
     }
    override public void OnDestroy()
     {
         UIScript.OnReLoadDuringGame -= ReloadScene;
-        if (!Quit)
-            Explotion();
-        if (OnBombExplosion != null)
-            OnBombExplosion();
+        if (!Quit && OnBombExplotion != null)
+            OnBombExplotion();
+       
+       if (OnBombExploded != null)
+            OnBombExploded();
+
         base.OnDestroy();
         
 

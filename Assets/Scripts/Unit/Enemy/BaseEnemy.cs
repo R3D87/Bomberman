@@ -1,30 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(EnemyController), typeof(Weapon))]
+[RequireComponent(typeof(EnemyController), typeof(Weapon), typeof(HealthBar))]
 public class BaseEnemy : BaseUnit, IDamage
 {
     ICharacterInput input;
     IWeaponFire weapon;
+    IHealth healthBar;
+    bool DamageSensitive = false;
 
     public event Action onFire;
 
     public event Action onEnemyDestroy;
-    void Start()
+
+    private void Awake()
     {
-        MaxHealth = 1;
+        MaxHealth = 10;
         Health = MaxHealth;
         onFire += SpawnBomb;
+
         input = GetComponent<ICharacterInput>();
         weapon = GetComponent<IWeaponFire>();
+        healthBar = GetComponent<IHealth>();
+        healthBar.MaxHealth(MaxHealth);
+    }
+    void Start()
+    {
+
     }
     public void TakeDamage(int damage)
     {
-        Debug.Log("Damage Enemy: "+damage +"Enemy Health: "+Health);
+        if (!DamageSensitive)
+            damage = 0;
+
+        Debug.Log("Damage Enemy: " + damage + "Enemy Health: " + Health);
+
+
         Health -= damage;
-        Debug.Log(damage);
+
+
         if (Health <= 0)
-            Destroy(gameObject);
+        {
+            Destroy(gameObject, 0.1f);
+        }
+        else
+        {
+            healthBar.DecreasingHealth(damage);
+        }
     }
 
     void SpawnBomb()
@@ -37,18 +59,24 @@ public class BaseEnemy : BaseUnit, IDamage
 
         return input.Horizontal != 0 || input.Vertical != 0;
     }
-    public bool FireExectuting(bool inputFire )
+    public bool FireExectuting(bool inputFire)
     {
         return inputFire;
     }
-   
+    void RemoveDamageImmune()
+    {
+        Debug.Log("Permision");
+        if (!DamageSensitive)
+            DamageSensitive = true;
+    }
     // Update is called once per frame
     void Update()
     {
         if (HasInputChanged())
         {
-            Movement(input.Horizontal, input.Vertical);
-            
+            bool IsMoveSuccessful = Movement(input.Horizontal, input.Vertical);
+            Invoke("RemoveDamageImmune", MoveDuration);
+           // RemoveDamageImmune(IsMoveSuccessful);
             // Debug.Log("X: " + input.Horizontal + " Y: " + input.Vertical);
         }
         if (input.Fire)
