@@ -65,7 +65,7 @@ public class BaseEnemy : BaseUnit, IDamage
     }
     void RemoveDamageImmune()
     {
-        Debug.Log("Permision");
+      
         if (!DamageSensitive)
             DamageSensitive = true;
     }
@@ -74,9 +74,15 @@ public class BaseEnemy : BaseUnit, IDamage
     {
         if (HasInputChanged())
         {
-            bool IsMoveSuccessful = Movement(input.Horizontal, input.Vertical);
-            Invoke("RemoveDamageImmune", MoveDuration);
-           // RemoveDamageImmune(IsMoveSuccessful);
+            
+                Movement(input.Horizontal, input.Vertical);
+
+            if (IsMoveExecuting())
+                Invoke("RemoveDamageImmune", MoveDuration);
+
+
+
+            // RemoveDamageImmune(IsMoveSuccessful);
             // Debug.Log("X: " + input.Horizontal + " Y: " + input.Vertical);
         }
         if (input.Fire)

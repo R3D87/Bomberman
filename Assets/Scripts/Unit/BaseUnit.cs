@@ -19,6 +19,13 @@ public class BaseUnit : MonoBehaviour {
     protected int Health;
     protected float MoveDuration = 0.5f;
 
+    protected bool IsMoveExecuting()
+    {
+        if (MoveProgressing != null)
+            return true;
+        else
+            return false;
+    }
     private void Awake()
     {
         Health = MaxHealth;
@@ -38,20 +45,9 @@ public class BaseUnit : MonoBehaviour {
     protected bool HasMovePremmission(int xDir, int yDir)
     {
         BaseTile tileToTyp = GetNeigbourInDirection(xDir, yDir);
-
-        if (GetTileType(tileToTyp) == typeof(Wall))
-            return false;
-
-        if (tileToTyp.HasTileOccupied())
-            return false;
-
-        return true;
+        return tileToTyp.CanBeEntered();
     }
-    Type GetTileType(BaseTile basetile) 
-    {  
-        Type type = basetile.GetType();
-        return type;
-    }
+
     public void SetBaseTile(BaseTile tileToSet)
     {
         tile = tileToSet;

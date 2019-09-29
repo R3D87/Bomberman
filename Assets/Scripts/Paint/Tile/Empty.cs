@@ -14,7 +14,7 @@ public class Empty : BaseTile {
         {
             if (unitToAdd.GetComponent<IDamage>() != null)
             {
-             //   unitToAdd.GetComponent<IDamage>().TakeDamage(1);
+                unitToAdd.GetComponent<IDamage>().TakeDamage(1);
                 Debug.Log("Take damage form Fire");
             }
 
@@ -26,12 +26,5 @@ public class Empty : BaseTile {
     {
         return baseObjects.Select(x => x.GetType() == typeof(ExplosionEffect)).Any();
     }
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
 }

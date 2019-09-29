@@ -26,4 +26,8 @@ public class Wall :BaseTile {
     {
         Debug.Log("InValid RemovUnitOnTile:" + unitToRemove);
     }
+    public override bool CanBeEntered()
+    {
+        return false;
+    }
 }

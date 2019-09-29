@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class BaseTile : MonoBehaviour, IDamage {
 
-
-
     public event Action<BaseUnit> OnEnterUnitOnTile;
     public event Action<PowerUp> OnTakePowerUp;
 
@@ -17,14 +15,61 @@ public class BaseTile : MonoBehaviour, IDamage {
     bool occupied;
     public GameBoard board;
 
+    virtual public bool OccupieRequest()
+    {
+        return true;
+    }
 
+    virtual public void AddObjectToTile(BaseObject objectToAdd)
+    {
+
+        if (objectToAdd == null)
+            return;
+        baseObjects.Add(objectToAdd);
+        objectToAdd.tile = this;
+        objectToAdd.SetCoord(PositionOnGrid);
+        objectToAdd.OnDestroyBaseObject += RemoveObjectOnTile;
+
+    }
+
+    virtual public void AddUnitOnTile(BaseUnit unitToAdd)
+    {
+        if (unitToAdd == null)
+            return;
+        OnTakePowerUp += unitToAdd.TakePowerUp;
+        unitToAdd.SetBaseTile(this);
+        unitToAdd.SetCoord(PositionOnGrid);
+        baseUnits.Add(unitToAdd);
+        OnEnterUnitOnTile(unitToAdd);
+        unitToAdd.OnDestroyBaseUnit += RemovUnitOnTile;
+
+    }
+
+    virtual public void RemoveObjectOnTile(BaseObject objectToRemove)
+    {
+        objectToRemove.OnDestroyBaseObject -= RemoveObjectOnTile;
+        baseObjects.Remove(objectToRemove);
+    }
+
+    virtual public void RemovUnitOnTile(BaseUnit unitToRemove)
+    {
+        unitToRemove.OnDestroyBaseUnit -= RemovUnitOnTile;
+        OnTakePowerUp -= unitToRemove.TakePowerUp;
+        baseUnits.Remove(unitToRemove);
+    }
+
+    virtual public bool CanBeEntered()
+    {
+        return !HasTileOccupied();
+    }
     private void OnEnable()
     {
         OnEnterUnitOnTile += FindObjectToTake;
        
     }
 
-    public  bool HasTileOccupied()
+
+    public bool HasTileOccupied()
     {
 
             foreach (BaseObject itemObject in baseObjects)
@@ -56,48 +101,7 @@ public class BaseTile : MonoBehaviour, IDamage {
         return false;
     }
 
-    virtual public bool OccupieRequest()
-    {
-        return true;
-    }
 
-    virtual public void AddObjectToTile(BaseObject objectToAdd)
-    {
-
-        if (objectToAdd == null)
-            return;
-        baseObjects.Add(objectToAdd);
-        objectToAdd.tile = this;
-        objectToAdd.SetCoord(PositionOnGrid);
-        objectToAdd.OnDestroyBaseObject += RemoveObjectOnTile;
-       
-    }
-
-    virtual public void AddUnitOnTile(BaseUnit unitToAdd)
-    {
-        if (unitToAdd == null)
-            return;
-        OnTakePowerUp += unitToAdd.TakePowerUp;
-        unitToAdd.SetBaseTile(this);
-        unitToAdd.SetCoord(PositionOnGrid);
-        baseUnits.Add(unitToAdd);
-        OnEnterUnitOnTile(unitToAdd);
-        unitToAdd.OnDestroyBaseUnit += RemovUnitOnTile;
-       
-    }
-
-    virtual public void RemoveObjectOnTile(BaseObject objectToRemove)
-    {
-        objectToRemove.OnDestroyBaseObject -= RemoveObjectOnTile;
-        baseObjects.Remove(objectToRemove);
-    }
-
-    virtual public void RemovUnitOnTile(BaseUnit unitToRemove)
-    {
-        unitToRemove.OnDestroyBaseUnit -= RemovUnitOnTile;
-        OnTakePowerUp -= unitToRemove.TakePowerUp;
-        baseUnits.Remove(unitToRemove);
-    }
     
     public BaseTile GetNeigbourInDirection(int x, int y)
     {
