@@ -9,21 +9,22 @@ public class BaseBomb : BaseObject, IDamage {
     SimpleMethod[] simpleMethodForWidth;
     public event Action OnBombExploded;
     public event Action OnBombExplotion;
-  //  public event Action On
+    public ExplosionEffect effect;
+
     int ExplotionRange = 1;
     int Damage = 1;
     float Timer = 0;
     int DetonationTime = 2;
     bool DoOnce = true;
-   
-    public ExplosionEffect effect;
+    bool isDebug = false;
+
     private  bool Quit = false;
 
-   
     int IncreaseValue()
     {
         return  1;
     }
+
     int DecreaseValue()
     {
         return - 1;
@@ -33,7 +34,8 @@ public class BaseBomb : BaseObject, IDamage {
     {
         return 0;
     }
-     void ReloadScene()
+
+    void ReloadScene()
     {
         Quit = true;
     }
@@ -48,7 +50,7 @@ public class BaseBomb : BaseObject, IDamage {
              new SimpleMethod(IncreaseValue),
              new SimpleMethod(DecreaseValue) } ;
 
-         simpleMethodForWidth = new SimpleMethod[4] {
+        simpleMethodForWidth = new SimpleMethod[4] {
              new SimpleMethod(DecreaseValue),
              new SimpleMethod(IncreaseValue),
              new SimpleMethod(ConstatntValue),
@@ -61,7 +63,7 @@ public class BaseBomb : BaseObject, IDamage {
         if (limit >= ExplotionRange)
             return;
 
-      BaseTile tileToCheck = tile.GetNeigbourInDirection(x,y);
+        BaseTile tileToCheck = tile.GetNeigbourInDirection(x,y);
         
         if (tileToCheck.GetType() == typeof(Wall))
             return;
@@ -71,13 +73,10 @@ public class BaseBomb : BaseObject, IDamage {
         tileToCheck.GetComponent<IDamage>().TakeDamage(Damage);
         if (idx == -1)
             return;
-
-
+       
         limit++;
-
-        PropateExplotion(x + simpleMethodForHeight[idx](), y+ simpleMethodForWidth[idx](), limit,idx);
   
-        
+        PropateExplotion(x + simpleMethodForHeight[idx](), y+ simpleMethodForWidth[idx](), limit,idx); 
     }
 
     bool IsCountdownFinished(int detonationTime)
@@ -90,22 +89,23 @@ public class BaseBomb : BaseObject, IDamage {
     {
         DoOnce = false;
     }
+
     bool WasExplotionExecuted()
     {
         return DoOnce;
     }
+
     private void Update()
     {
-
         if (IsCountdownFinished(DetonationTime) && OnBombExplotion!=null)
         {
             OnBombExplotion();
             OnBombExplotion = null;
         }
     }
+
     void Explotion()
-    {
-        
+    {     
         int limit = 0;
       
         for (int i = 0; i < 4; i++)
@@ -113,18 +113,17 @@ public class BaseBomb : BaseObject, IDamage {
            PropateExplotion(simpleMethodForHeight[i](), simpleMethodForWidth[i](), limit, i);
         }
         PropateExplotion(0, 0, limit, -1);
-     
 
-
-
-        Debug.DrawRay(transform.position, 1.5f*Vector3.left, Color.red,int.MaxValue);
-        Debug.DrawRay(transform.position, Vector3.right, Color.red, int.MaxValue);
-        Debug.DrawRay(transform.position, Vector3.up, Color.red, int.MaxValue);
-        Debug.DrawRay(transform.position, Vector3.down, Color.red, int.MaxValue);
-     
-       
+        if (isDebug)
+        {
+            Debug.DrawRay(transform.position, 1.5f * Vector3.left, Color.red, int.MaxValue);
+            Debug.DrawRay(transform.position, Vector3.right, Color.red, int.MaxValue);
+            Debug.DrawRay(transform.position, Vector3.up, Color.red, int.MaxValue);
+            Debug.DrawRay(transform.position, Vector3.down, Color.red, int.MaxValue);
+        }
     }
-   override public void OnDestroy()
+
+    override public void OnDestroy()
     {
         UIScript.OnReLoadDuringGame -= ReloadScene;
         if (!Quit && OnBombExplotion != null)
@@ -134,10 +133,7 @@ public class BaseBomb : BaseObject, IDamage {
             OnBombExploded();
 
         base.OnDestroy();
-        
-
     }
-
 
     public void modifierProperties(int modifierDamageRange, int modifierDamageDuration, int modifierDamageValue)
     {
@@ -149,7 +145,6 @@ public class BaseBomb : BaseObject, IDamage {
     {  
         Destroy(gameObject,0.1f);
     }
-
 
     private void OnApplicationQuit()
     {

@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class GameMode : MonoBehaviour {
 
-   
-
     GameObject gameBoardObject;
     public GameObject gameBuilderObject;
     Translator translator;
     GameBoard gameBoard;
-
     GameBuilder gameBuilder;
 
     private void Awake()
@@ -19,40 +16,32 @@ public class GameMode : MonoBehaviour {
         gameBoard = GetComponent<GameBoard>();
     }
 
-    // Use this for initialization
     void Start()
     {
-
         UIScript.OnQuickStart += DebugBuildGame;
         UIScript.OnClickPresetLevel += RequestForPaintedBoard;
         UIScript.OnStartAfterPreparedLevel += OnlyTranslation;
-
-       
-
         gameBuilder = gameBuilderObject.GetComponent<GameBuilder>();
-
     }
+
     bool Validate(GameObject gameObject)
     {
         return (gameObject != null) ? true : false;
     }
-    // Update is called once per frame
 
     void Update ()
     {
-
         if(Input.GetKeyDown(KeyCode.F))
             DebugBuildGame();
-
-
     }
+
     void DebugBuildGame()
     {
         RequestForPaintedBoard();
         AttachTranslatorComponent();
-        Invoke("StartedTranslation", 0.01f);
-      
+        Invoke("StartedTranslation", 0.01f);  
     }
+
     void OnlyTranslation()
     {
         AttachTranslatorComponent();
@@ -86,13 +75,11 @@ public class GameMode : MonoBehaviour {
 
     void DestroyAllPaintHelper()
     {
-
         ObjectSource[] AllChildren = GetComponentsInChildren<ObjectSource>();
         foreach (ObjectSource child in AllChildren)
         {
             if (child.gameObject == gameObject)
                 continue;
-           // Debug.Log(child.gameObject.name);
            Destroy(child.gameObject);
         }
     }
@@ -102,17 +89,16 @@ public class GameMode : MonoBehaviour {
         Destroy(translator);
         Destroy(gameBuilder.gameObject);
     }
+
     void TrasferTranslation()
     {
         gameBoard.ReceiveTranslation(translator.SendTranslation());
-        
-        
     }
+
     private void OnDisable()
     {
         UIScript.OnQuickStart -= DebugBuildGame;
-       UIScript.OnClickPresetLevel -= RequestForPaintedBoard;
+        UIScript.OnClickPresetLevel -= RequestForPaintedBoard;
         UIScript.OnStartAfterPreparedLevel -= OnlyTranslation;
     }
-
 }

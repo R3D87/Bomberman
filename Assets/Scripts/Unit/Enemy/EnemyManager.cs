@@ -6,7 +6,7 @@ public class EnemyManager : MonoBehaviour,IEnemy
 {
     public int MaxEnemyOnBoard = 3;
     public BaseEnemy[] Enemy;
-    float threshold = 0.75f;//0.3f;
+    float threshold = 0.75f;
     int EnemyCounter = 0;
     bool Quit = false;
 
@@ -24,7 +24,6 @@ public class EnemyManager : MonoBehaviour,IEnemy
             BaseEnemy Inst = Instantiate(RandomChosenEnemy(), baseTile.transform.position, Quaternion.identity);
             baseTile.AddUnitOnTile(Inst);
             Inst.onEnemyDestroy += DecreaseEnemies;
-            Debug.Log("Intercace Enemy Manager");
         }
     }
 
@@ -45,8 +44,6 @@ public class EnemyManager : MonoBehaviour,IEnemy
         float Rnd = Random.Range(0, 1f);
         return (threshold >=Rnd) && MaxEnemyOnBoard > EnemyCounter;
     }
-
-
 
     private void OnApplicationQuit()
     {

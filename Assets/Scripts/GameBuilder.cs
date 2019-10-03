@@ -2,11 +2,8 @@
 using System.Linq;
 using UnityEngine;
 
-
-
 public class GameBuilder : MonoBehaviour {
 
-    // Use this for initialization
     [Range(6, 20)]
     public int userWidth = 15;
     [Range(6, 20)]
@@ -15,29 +12,24 @@ public class GameBuilder : MonoBehaviour {
     public GameObject EmptyCanvas;
     public GameObject Wall;
     public GameObject Obstacle;
+    public event Action OnPaintingRandomBoard;
     int heigh = 18;
     int width;
     GameObject[,] Paint;
 
-
-
-
-    public event Action OnPaintingRandomBoard; 
-
-  
     public void PaintingRandomBoard()
     {
         if(OnPaintingRandomBoard!=null)
         OnPaintingRandomBoard();
     }
+
     private void Awake()
     {
         OnPaintingRandomBoard += FillBoard;
     }
+
     void Start()
     {
-     
-
         width = userWidth;
         heigh = userHeigh;
 
@@ -56,8 +48,6 @@ public class GameBuilder : MonoBehaviour {
                     Paint[x, y] = Instantiate(Wall, position, Quaternion.identity, gameObject.transform);
                     Paint[x, y].layer = LayerMask.NameToLayer("Default");
                     Paint[x, y].GetComponent<PaintTile>().PaintTileConstructor(x, y, PaintType.Wall);
-
-
                 }
                 else
                 {
@@ -67,7 +57,6 @@ public class GameBuilder : MonoBehaviour {
             }
         }
         UIScript.OnConditionCheck += IsFulFillStartGameCondition;
-
     }
 
     void convert1DCoordTo2D(int i, out int x, out int y)
@@ -75,30 +64,10 @@ public class GameBuilder : MonoBehaviour {
         x = i / width;
         y = i % width;
     }
+
     int convert2DcoordTo1D(int x, int y)
     {
         return x * width + y % width;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            OnPaintingRandomBoard();
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            for (int i = 0; i < width * heigh; i++)
-            {
-                int x = i / width;
-                int y = i % width;
-                Debug.Log(Paint[x, y].GetComponent<PaintTile>().PositionX + " " + Paint[x, y].GetComponent<PaintTile>().PositionY + " " + Paint[x, y].GetComponent<PaintTile>().PaintTileType);
-            }
-
-
-        }
-
     }
 
     bool IsFulFillStartGameCondition()
@@ -121,6 +90,7 @@ public class GameBuilder : MonoBehaviour {
         }
         return isBoxOnBoard && isEmptyTileOnBoard;
     }
+
     void FillBoard()
     {
 
@@ -128,7 +98,6 @@ public class GameBuilder : MonoBehaviour {
         {
             for (int y = 1; y < heigh; y++)
             {
-
                 Vector3 vector = new Vector3(x - width / 2, y - heigh / 2, 0);
 
                 if (x % 2 == 0 && y % 2 == 0)
@@ -149,8 +118,6 @@ public class GameBuilder : MonoBehaviour {
                         Destroy(Paint[x, y]);
                         Paint[x, y] = Instantiate(Obstacle, vector, Quaternion.identity, gameObject.transform);
                         Paint[x, y].GetComponent<PaintTile>().PaintTileConstructor(x, y, PaintType.Box);
-
-
                     }
                     else
                     {
@@ -159,18 +126,14 @@ public class GameBuilder : MonoBehaviour {
                         Paint[x, y].GetComponent<PaintTile>().PaintTileConstructor(x, y, PaintType.Empty);
                     }
                 }
-
             }
         }
     }
 
-
     bool IsAllowedToSetObstacle()
     {
-        float rnd = UnityEngine.Random.value;
-        
+        float rnd = UnityEngine.Random.value;    
         return (rnd >= threshold) ? true : false;
-
     }
 
     public GameObject[,] SendGameBoardBluprint()
@@ -182,16 +145,10 @@ public class GameBuilder : MonoBehaviour {
     {
         Paint[x, y] = gameObject;
     }
-    /*  private void OnDisable()
-      {
-          OnPaintingRandomBoard -= FillBoard;
-          UIScript.OnConditionCheck -= IsFulFillStartGameCondition;
-      }*/
+
     private void OnDestroy()
     {
         OnPaintingRandomBoard -= FillBoard;
         UIScript.OnConditionCheck -= IsFulFillStartGameCondition;
     }
-
-
 }

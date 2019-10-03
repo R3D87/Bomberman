@@ -12,17 +12,11 @@ public class Weapon : MonoBehaviour,IWeaponFire
     int modifierDamageDuration;
     int modifierMaxBombAmount;
 
-    //-Interface
     public int ModifierDamageRange { get { return modifierDamageRange; } set {  modifierDamageRange = value; } }
     public int ModifierDamageValue { get { return modifierDamageValue; } set { modifierDamageValue = value; } }
     public int ModifierDamageDuration { get { return modifierDamageDuration; } set { modifierDamageDuration = value; }  }
     public int ModifierMaxBombAmount { get { return modifierMaxBombAmount; } set { modifierMaxBombAmount = value; MaxBombAmount += 1;  } }
 
-    //- Interface
-
-
-  
-  
     int MaxBombAmount = 1;
     int CurrentBombAmount=0; 
     
@@ -57,6 +51,4 @@ public class Weapon : MonoBehaviour,IWeaponFire
         tile.AddObjectToTile(bombToInit);
         bombToInit.modifierProperties(ModifierDamageRange, ModifierDamageDuration, ModifierDamageValue);
     }
-  
-
 }

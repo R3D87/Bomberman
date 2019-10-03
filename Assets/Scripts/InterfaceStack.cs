@@ -8,27 +8,28 @@
 }
 
 interface ICharacterInput
-{
-   
+{   
     int Horizontal { get;  }
     int Vertical { get; }
     bool Fire { get;  }
-    // float Speed { get; }
+
 }
+
 interface IDamage
 {
-   
-    void TakeDamage(int damage);
-    
+    void TakeDamage(int damage);   
 }
+
 interface IPowerUp
 {
     void ChanceToSpawnPowerUp(BaseTile tile);
 }
+
 interface IEnemy
 {
     void ChanceToSpawnEnemy(BaseTile tile);
 }
+
 interface IAbility
 {
     int DamageRange { get; }
@@ -42,7 +43,8 @@ interface IFactory
 {
     void SpawnEntiy(BaseTile tile);
 }
- interface IHealth
+
+interface IHealth
 {
     void MaxHealth(int health);
     void DecreasingHealth(int decrementHealth);

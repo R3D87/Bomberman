@@ -5,10 +5,6 @@ using System;
 
 public class HealthBar : MonoBehaviour, IHealth {
 
-    // Use this for initialization
-
-   // public event Action<int> AdjustHeartsPosition;
-
     public HealthHeart heart;
     private List<HealthHeart> HeartsList =new List<HealthHeart>();
 
@@ -21,19 +17,21 @@ public class HealthBar : MonoBehaviour, IHealth {
         SetAmountHearts(decrementHealth);
         UpdatePositionAfterChangeHeartsAmount();
     }
+
     void UpdatePositionAfterChangeHeartsAmount()
     {
         for (int i = 0; i < AmountHearts; i++)
         {
             Vector3 HeartPosition = new Vector3((i - AmountHearts / 2) *0.5f, -0.5f, 0f);
             HeartsList[i].transform.localPosition = HeartPosition;
-        }
-        
+        }      
     }
+
     void SetAmountHearts(int Amount)
     {
         AmountHearts -= Amount;
     }
+
     void DestroyHearts(int HeartsToDestroy)
     {
         for (int i = 1; i <= HeartsToDestroy; i++)
@@ -49,18 +47,17 @@ public class HealthBar : MonoBehaviour, IHealth {
         AmountHearts = health;
         SpawnHeartOnStart();
     }
+
     void SpawnHeartOnStart()
     {
         for (int i = 0; i < AmountHearts; i++)
         {
-
             Vector3 HeartPosition = new Vector3((i-AmountHearts/2) * 0.35f,-0.5f,0f);
       
             HealthHeart freshHeart = Instantiate(heart, gameObject.transform.position+ HeartPosition,Quaternion.identity);
             freshHeart.transform.SetParent(gameObject.transform);
             HeartsList.Add(freshHeart);
+        }
     }
-    }
-
 }
 

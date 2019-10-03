@@ -2,34 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public class BaseTile : MonoBehaviour, IDamage {
 
     public event Action<BaseUnit> OnEnterUnitOnTile;
     public event Action<PowerUp> OnTakePowerUp;
-
     protected List<BaseObject> baseObjects = new List<BaseObject>();
     protected List<BaseUnit> baseUnits = new List<BaseUnit>();
     public Vector2Int PositionOnGrid { get; set; }
     bool occupied;
     public GameBoard board;
 
-    virtual public bool OccupieRequest()
-    {
-        return true;
-    }
+    virtual public bool OccupieRequest() { return true; }
 
     virtual public void AddObjectToTile(BaseObject objectToAdd)
     {
-
         if (objectToAdd == null)
             return;
         baseObjects.Add(objectToAdd);
         objectToAdd.tile = this;
         objectToAdd.SetCoord(PositionOnGrid);
         objectToAdd.OnDestroyBaseObject += RemoveObjectOnTile;
-
     }
 
     virtual public void AddUnitOnTile(BaseUnit unitToAdd)
@@ -42,7 +34,6 @@ public class BaseTile : MonoBehaviour, IDamage {
         baseUnits.Add(unitToAdd);
         OnEnterUnitOnTile(unitToAdd);
         unitToAdd.OnDestroyBaseUnit += RemovUnitOnTile;
-
     }
 
     virtual public void RemoveObjectOnTile(BaseObject objectToRemove)
@@ -62,52 +53,39 @@ public class BaseTile : MonoBehaviour, IDamage {
     {
         return !HasTileOccupied();
     }
+
     private void OnEnable()
     {
         OnEnterUnitOnTile += FindObjectToTake;
-       
     }
-
 
     public bool HasTileOccupied()
     {
-
             foreach (BaseObject itemObject in baseObjects)
             {
-
                 if (itemObject.GetType() == typeof(Obstacle))
                 {
                     return true;
-                }
-            
-            }
-        
+                }         
+            }  
             return false;
     }
 
     public bool HasTilePowerUp()
     {
-
         foreach (BaseObject itemObject in baseObjects)
         {
-
             if (itemObject.GetType() == typeof(PowerUp))
             {
                 return true;
             }
-
         }
-
         return false;
     }
-
-
     
     public BaseTile GetNeigbourInDirection(int x, int y)
     {
         Vector2Int Coord = ConvertDirectionTo2dCoord(x, y);
-        //Debug.Log(Coord);
-      
         return board.GetNeighbourTile(Coord.x, Coord.y);
     }
 
@@ -126,11 +104,11 @@ public class BaseTile : MonoBehaviour, IDamage {
         PowerUp power = FindPowerUp();
         if (power != null)
         {
-            Debug.Log(power.name);
             OnTakePowerUp(power);
             Destroy(FindPowerUp().gameObject,0.1f);
         }
     }
+
     PowerUp FindPowerUp()
     {
         foreach  (BaseObject objectOnTile in baseObjects)
@@ -148,8 +126,7 @@ public class BaseTile : MonoBehaviour, IDamage {
     {
         List<BaseObject> ObjectsListForTakeDamage = new List<BaseObject>(baseObjects);
         foreach (var item in ObjectsListForTakeDamage)
-        {
-           
+        {   
             if (item.GetComponent<IDamage>() != null)
             {
                 item.GetComponent<IDamage>().TakeDamage(damage);
@@ -163,7 +140,6 @@ public class BaseTile : MonoBehaviour, IDamage {
             {
                 item.GetComponent<IDamage>().TakeDamage(damage);
             }
-        }
-         
+        }      
     }
 }

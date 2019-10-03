@@ -10,7 +10,6 @@ public class Obstacle : BaseObject, IDamage {
     int debug = 0;
 
     IFactory factory;
-    private bool ExitApplication = false;
 
     void Start()
     {

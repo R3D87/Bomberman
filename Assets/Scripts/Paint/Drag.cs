@@ -5,24 +5,17 @@ using UnityEngine;
 public class Drag : MonoBehaviour
 {
 
-    // array for storing if the 3 mouse buttons are dragging
     bool[] isDragActive;
-
-    // for remembering if a button was down in previous frame
     bool[] downInPreviousFrame;
- 
 
     protected virtual void Start()
     {
         isDragActive = new bool[] { false, false, false };
-        downInPreviousFrame = new bool[] { false, false, false };
-
-        
+        downInPreviousFrame = new bool[] { false, false, false }; 
     }
 
     protected virtual void Update()
     {
-
         for (int i = 0; i < isDragActive.Length; i++)
         {
             if (Input.GetMouseButton(i))
@@ -53,21 +46,10 @@ public class Drag : MonoBehaviour
         }
     }
 
-    public virtual void OnDraggingStart(int mouseButton)
-    {
-        // implement this for start of dragging
-      //  Debug.Log("MouseButton" + mouseButton + " START Drag");
-    }
+    public virtual void OnDraggingStart(int mouseButton) { }
 
-    public virtual void OnDragging(int mouseButton)
-    {
-        // implement this for dragging
-      //  Debug.Log("MouseButton" + mouseButton + "DRAGGING");
-    }
+    public virtual void OnDragging(int mouseButton) { }
 
-    public virtual void OnDraggingEnd(int mouseButton)
-    {
-        // implement this for end of dragging
-      //  Debug.Log("MouseButton" + mouseButton + " END Drag");
-    }
+    public virtual void OnDraggingEnd(int mouseButton) { }
+
 }

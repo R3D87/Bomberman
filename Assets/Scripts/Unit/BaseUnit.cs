@@ -5,10 +5,6 @@ using System;
 
 public class BaseUnit : MonoBehaviour {
 
-    // Use this for initialization
-    public delegate void MovePreperation(Vector2Int coord);
-    public static event MovePreperation OnMovePreparation;
-
     public delegate void DestroyBaseUnit(BaseUnit baseUnit);
     public event DestroyBaseUnit OnDestroyBaseUnit;
 
@@ -29,14 +25,13 @@ public class BaseUnit : MonoBehaviour {
     private void Awake()
     {
         Health = MaxHealth;
-
     }
 
     private void Start()
     {
         coord = tile.PositionOnGrid;
-      
     }
+
     public void SetCoord(Vector2Int coordToSet)
     {
         coord = coordToSet;
@@ -52,19 +47,16 @@ public class BaseUnit : MonoBehaviour {
     {
         tile = tileToSet;
     }
-    public virtual void TakePowerUp(PowerUp powerUp)
-    {
-        Debug.Log(powerUp.GetComponent<IAbility>().HealthIncrease);
-        Debug.Log("Have PowerUp");
-    }
+
+    public virtual void TakePowerUp(PowerUp powerUp) { }
+
     protected BaseTile GetNeigbourInDirection(int xDir, int yDir)
     {
         return tile.GetNeigbourInDirection(xDir, yDir);
-
     }
+
     protected bool Movement(int xDir, int yDir)
-    {
-       
+    {     
         if (HasMovePremmission(xDir, yDir))
         {
            return Move(xDir, yDir);
@@ -90,16 +82,13 @@ public class BaseUnit : MonoBehaviour {
             return true;
         }
         return false;
-      
-
     }
 
     protected IEnumerator SmoothMovement( Vector3 target, float duration)
     {
         float progress = 0;
         Vector3 StartPosition = transform.position;
-
-
+        
         while (progress<=duration)
         {
             progress = progress + Time.deltaTime;
@@ -109,14 +98,12 @@ public class BaseUnit : MonoBehaviour {
    
             yield return null;
         }
-        MoveProgressing = null;
-       
+        MoveProgressing = null;     
     }
 
-   virtual public void OnDestroy()
+    virtual public void OnDestroy()
     {
         if (OnDestroyBaseUnit != null)
             OnDestroyBaseUnit(this);
-      
     }
 }

@@ -12,7 +12,7 @@ public class UIScript : MonoBehaviour {
     public static event Action OnQuickStart;
     public static event Action OnClickPresetLevel;
     public static event Action OnStartAfterPreparedLevel;
-    public static event Action OnChangePaint;
+
     public static event Action OnReLoadDuringGame;
     public static event Func<bool> OnConditionCheck;
 
@@ -48,58 +48,62 @@ public class UIScript : MonoBehaviour {
         Exit.onFoundPlayer += ShowWinPopup;
 
     }
+
     void ShowWinPopup()
     {
         WinPopup.gameObject.SetActive(true);
     }
+
     public void ShowLosePopup()
     {
         LosePopup.gameObject.SetActive(true);
     }
+
     void HidePopups()
     {
         LosePopup.gameObject.SetActive(false);
         WinPopup.gameObject.SetActive(false);
     }
+
     public void StartGame()
     {
         LevelMaker.SetActive(false);
         MainMenu.gameObject.SetActive(false);
         OnQuickStart();
     }
+
     public void StartGameOnPreparedLevel()
     {
         LevelMaker.SetActive(false);
         OnStartAfterPreparedLevel();
     }
+
     public void MakeLevel()
     {
             MainMenu.gameObject.SetActive(false);
     }
+
     public void SetPreset()
     {
         OnClickPresetLevel();
         FullFillConditions();
     }
+
     public void CheckChangeOnPaint()
     {
         FullFillConditions();
     }
+
     private void FullFillConditions()
-    {
-        
+    {  
         if (OnConditionCheck != null)
         {
             if (OnConditionCheck())
             {
                 StartGameCustom.interactable = true;
-
-                Debug.Log("Condition true");
             }
             else
             {
-
-                Debug.Log("Condition false");
                 StartGameCustom.interactable = false;
             }
         }
@@ -130,6 +134,7 @@ public class UIScript : MonoBehaviour {
         LevelMaker.SetActive(true);
         HidePopups();
     }
+
     public void TryAgain()
     {
         ResetCurrentSceneDuringGame();
@@ -137,11 +142,7 @@ public class UIScript : MonoBehaviour {
         Invoke("SetPreset", 0.02f);
         Invoke("StartGameOnPreparedLevel", 0.03f);
         Invoke("HidePopups", 0.01f);
-
-
     }
-
-
 }
    
 

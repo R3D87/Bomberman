@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ExplosionEffect : BaseObject {
 
-    // Use this for initialization
-
     float AppearanceTime = 1f;
     float Timer = 0;
     
@@ -15,10 +13,9 @@ public class ExplosionEffect : BaseObject {
         if (AppearanceTime < Timer)
             Destroy(gameObject);
     }
+
     public override void OnDestroy()
     {
-
         base.OnDestroy();
     }
-
 }

@@ -1,10 +1,17 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
- public class PowerUpManager: MonoBehaviour, IPowerUp
+public class PowerUpManager: MonoBehaviour, IPowerUp
 { 
+    enum PowerUpAbility
+    {
+        Damage,
+        Range,
+        Duration,
+        Health,
+        BombAmount
+    }
 
     public PowerUp[] powerUp;
     float threshold = 0.3f;
@@ -14,7 +21,6 @@ using UnityEngine;
 
     public void ChanceToSpawnPowerUp(BaseTile tile)
     {
-        Debug.Log(" Interface PowerUp");
         if (HasSpawnPowerUp() && !Quit)
             SpawnPowerUp(tile);
     }
@@ -28,7 +34,6 @@ using UnityEngine;
             Inst.OnPowerUpDestroy += DecreasePowerUpCounter;
 
             powerUpCounter++;
-            Debug.Log("PowerUp");
         }
     }
 

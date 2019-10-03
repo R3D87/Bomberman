@@ -56,7 +56,6 @@ public class Player : BaseUnit, IDamage
    
     void UpgradeAbility(IAbility abilityToPropagate)
     {
-        Debug.Log("Health: " + Health);
         Health += abilityToPropagate.HealthIncrease;
         weapon.ModifierDamageDuration += abilityToPropagate.DamageDuration;
         weapon.ModifierDamageRange += abilityToPropagate.DamageRange;
@@ -68,7 +67,6 @@ public class Player : BaseUnit, IDamage
     {
         Health -= damage;
         healthBar.DecreasingHealth(damage);
-        Debug.Log("Damage Player: " + damage + "Player Health: " + Health);
         if (Health <= 0)
         {
             if (onPlayerDestroy != null)
@@ -85,9 +83,9 @@ public class Player : BaseUnit, IDamage
             UpgradeAbility(ability);
         base.TakePowerUp(powerUp);
     }
+
     public override void OnDestroy()
-    {
-       
+    { 
         base.OnDestroy();
     }
 }

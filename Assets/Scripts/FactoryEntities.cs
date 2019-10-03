@@ -5,7 +5,6 @@ using System.Linq;
 
 public class FactoryEntities: MonoBehaviour, IFactory {
 
-    // Use this for initialization
     float threshold = 0.3f;
     private IPowerUp powerUp;
     private IEnemy enemy;
@@ -24,7 +23,6 @@ public class FactoryEntities: MonoBehaviour, IFactory {
 
     public void SpawnEntiy(BaseTile tile)
     {
-        Debug.Log("Factory");
         powerUp.ChanceToSpawnPowerUp(tile);
         enemy.ChanceToSpawnEnemy(tile);
     }

@@ -5,6 +5,7 @@ using System.Linq;
 
 public class Empty : BaseTile {
 
+    int AmountDamage = 1;
 
     public override void AddUnitOnTile(BaseUnit unitToAdd)
     {
@@ -14,17 +15,13 @@ public class Empty : BaseTile {
         {
             if (unitToAdd.GetComponent<IDamage>() != null)
             {
-                unitToAdd.GetComponent<IDamage>().TakeDamage(1);
-                Debug.Log("Take damage form Fire");
+                unitToAdd.GetComponent<IDamage>().TakeDamage(AmountDamage);             
             }
-
         }
-
     }
 
     bool IsExplotionExecutingOnTile()
     {
         return baseObjects.Select(x => x.GetType() == typeof(ExplosionEffect)).Any();
     }
-
 }

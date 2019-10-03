@@ -4,14 +4,10 @@ using UnityEngine;
 using System;
 
 public class PlayerInput : MonoBehaviour, ICharacterInput {
-
     
     public int Horizontal { get; private set; }
     public int  Vertical{ get; private set; }
     public bool Fire { get; private set; }
-
-    
-    
 
     public void ReadInput()
     {
@@ -20,11 +16,8 @@ public class PlayerInput : MonoBehaviour, ICharacterInput {
         Fire = Input.GetButtonDown("Fire1");
     }
 
-    // Update is called once per frame
-
     void Update()
     {
         ReadInput();
     }
-
 }

@@ -30,21 +30,14 @@ public class PaintTile : MonoBehaviour {
     {
         get { return positionX; } set { positionX = value; }
     }
+
     public int PositionY
     {
         get{ return positionY;} set{ positionY = value;}
     }
+
     public PaintType PaintTileType
     {
         get { return paintTileType; } set { paintTileType = value;  }
     }
-    // Use this for initialization
-
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    
 }

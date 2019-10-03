@@ -4,42 +4,30 @@ using UnityEngine;
 
 public class Exit : BaseTile {
 
-    // Use this for initialization
     public static event Action onFoundPlayer;
     public event Action OnAddUnittOnTile;
 
     private void Awake()
     {
         OnAddUnittOnTile += FindPlayerOnTile;
-      
     }
 
 
     public override void AddUnitOnTile(BaseUnit unitToAdd)
     {
-
         base.AddUnitOnTile(unitToAdd);
         OnAddUnittOnTile();
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
     void FindPlayerOnTile()
     {
         foreach (var unit in baseUnits)
-        {
-            
-            if( unit.GetType() == typeof(Player))
+        {          
+            if(unit.GetType() == typeof(Player))
             {
-                Debug.Log("player on exit");
                onFoundPlayer();
-                break;
+               break;
             }
-        }
-      
-       
+        } 
     }
-
 }

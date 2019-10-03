@@ -7,7 +7,6 @@ using System.Linq;
 public class EnemyController : MonoBehaviour, ICharacterInput
 {
     BaseEnemy enemy;
-
     public int Horizontal { get; private set; }
     public int Vertical { get; private set; }
     public bool Fire { get; private set; }
@@ -15,9 +14,7 @@ public class EnemyController : MonoBehaviour, ICharacterInput
     List<BaseTile> TilesToCheck = new List<BaseTile>();
 
     List<int[]> InputPreset;
-    
-   
-    
+
     private void OnEnable()
     {
         InputPreset = new List<int[]> {
@@ -28,8 +25,6 @@ public class EnemyController : MonoBehaviour, ICharacterInput
         enemy = GetComponent<BaseEnemy>();
         Horizontal = 0;
         Vertical = 0;
-       
-   
     }
    
     private void Start()
@@ -42,8 +37,6 @@ public class EnemyController : MonoBehaviour, ICharacterInput
         bool skipFirstStep = true; ;
         while (true)
         {
-            Debug.Log("---");
-
             Movement();
             if (!skipFirstStep)
                 Shoot();
@@ -51,7 +44,6 @@ public class EnemyController : MonoBehaviour, ICharacterInput
 
             yield return new WaitForSeconds(0.5f);
         }
-
     }
 
     bool Movement()
@@ -95,7 +87,6 @@ public class EnemyController : MonoBehaviour, ICharacterInput
         List<BaseTile> TilesToInvestigate = new List<BaseTile>();
         TilesToInvestigate = HarvestData();
         Fire = HasBombToSpawnOpportunity(TilesToInvestigate);
-
     }
 
     List<BaseTile> HarvestData()
@@ -111,9 +102,9 @@ public class EnemyController : MonoBehaviour, ICharacterInput
     List<BaseTile> RemoveTemporaryBlockedTiles(List<BaseTile> TileToSelect)
     {
         TileToSelect.RemoveAll(i => i.HasTileOccupied() == true);
-  
         return TileToSelect;
     }
+
     List<BaseTile> RemoveOccupiedTile(List<BaseTile> TileToSelect)
     {
          TileToSelect.RemoveAll(x => x.CanBeEntered()==false);
@@ -130,8 +121,7 @@ public class EnemyController : MonoBehaviour, ICharacterInput
                 return true;
             }
         }
-        return false;
-        
+        return false;     
     }
 
     BaseTile TakeTileWithPowerUp( List<BaseTile> TilesToInvestigate)

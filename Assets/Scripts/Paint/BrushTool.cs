@@ -5,7 +5,7 @@ using System;
 
 public class BrushTool : MonoBehaviour
 {
-    // Use this for initialization
+
     public static event Action onPlayerPaint = null;
 
     GameObject Brush;
@@ -30,17 +30,18 @@ public class BrushTool : MonoBehaviour
         downInPreviousFrame = new bool[] { false, false};
     
         onPlayerPaint += ui.CheckChangeOnPaint;
-
-
     }
+
     Vector3 GetPosition(RaycastHit hit)
     {
         return hit.collider.gameObject.transform.position;
     }
+
     GameObject GetGameObject(RaycastHit hit)
     {
         return hit.collider.gameObject;
     }
+
     Vector2 GetPositionInArray(GameObject gameObject)
     {
         Vector2 position2D;
@@ -52,12 +53,9 @@ public class BrushTool : MonoBehaviour
 
     void Paint()
     {
-
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //    Debug.Log(mouseRay.direction);
         Debug.DrawRay(mouseRay.origin, mouseRay.direction, Color.red, int.MaxValue);
         RaycastHit hit;
-        // Add Object on Canvas
         if (Physics.Raycast(mouseRay, out hit, int.MaxValue, maskCanvas))
         {
             if (Brush != null)
@@ -80,7 +78,6 @@ public class BrushTool : MonoBehaviour
             }
 
         }
-        // Take Color form Source
         if (Physics.Raycast(mouseRay, out hit, int.MaxValue, maskPicker))
         {
 
@@ -91,16 +88,15 @@ public class BrushTool : MonoBehaviour
                 onPlayerPaint();
         }
     }
+
     void Erase()
     {
         Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-      //  Debug.Log(mouseRay.direction);
         Debug.DrawRay(mouseRay.origin, mouseRay.direction, Color.red, int.MaxValue);
         RaycastHit hit;
 
         if (Physics.Raycast(mouseRay, out hit, int.MaxValue, maskCanvas))
         {
-
             PaintType brushType = EraseBrush.GetComponent<PaintTile>().PaintTileType;
             GameObject objectToDestroy = GetGameObject(hit);
             Vector3 position = GetPosition(hit);
@@ -116,18 +112,15 @@ public class BrushTool : MonoBehaviour
                 onPlayerPaint();
         }
     }
+
     void OnDragging(int i)
     {
         if (i == 0)
             Paint();
         else
             Erase();
-       
-          
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         for (int i = 0; i < isDragActive.Length; i++)
@@ -142,8 +135,7 @@ public class BrushTool : MonoBehaviour
                     }
                     else
                     {
-                        isDragActive[i] = true;
-                       
+                        isDragActive[i] = true;   
                     }
                 }
                 downInPreviousFrame[i] = true;
@@ -153,12 +145,9 @@ public class BrushTool : MonoBehaviour
                 if (isDragActive[i])
                 {
                     isDragActive[i] = false;
-                 
                 }
                 downInPreviousFrame[i] = false;
             }
         }
-
     }
-
 }

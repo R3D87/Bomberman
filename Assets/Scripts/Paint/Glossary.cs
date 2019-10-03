@@ -16,7 +16,6 @@ public enum TileType
     Exit,
     Wall,
     Empty,
-
 };
 
 public enum ObjectType
@@ -25,7 +24,6 @@ public enum ObjectType
     Bomb,
     PowerUp,
     Empty
-
 };
 public enum UnitType
 {
@@ -33,9 +31,9 @@ public enum UnitType
     Player,
     Empty
 };
+
 public class Glossary : MonoBehaviour {
 
-    // public Dictionary<PaintType, TileType> TileTranslatorID = new Dictionary<PaintType, TileType>();
     [SerializeField]
     GlossaryItem[] glossaryItems;
 
@@ -59,8 +57,8 @@ public class Glossary : MonoBehaviour {
         CreateTilesSet();
         CreateObjectsSet();
         CreateUnitsSet();
-
     }
+
     void CreateGlossarySet()
     {
         string[] guids;
@@ -69,15 +67,10 @@ public class Glossary : MonoBehaviour {
         glossaryItems = new GlossaryItem[size];
         for (int i = 0; i < size; i++)
         {
-           // Debug.Log("Dictionary: " + AssetDatabase.GUIDToAssetPath(guids[i]));
-
             glossaryItems[i]= (GlossaryItem) AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
-        foreach (var item in glossaryItems)
-        {
-           // Debug.Log(item.paintType+" "+item.tileType + " " +item.objectType + " " +item.unitType);
-        }
     }
+
     void CreateTilesSet()
     {
         string[] guids;
@@ -86,15 +79,10 @@ public class Glossary : MonoBehaviour {
         tileTypes = new TileTypes02[size];
         for (int i = 0; i < size; i++)
         {
-           // Debug.Log("Tile: " + AssetDatabase.GUIDToAssetPath(guids[i]));
-
             tileTypes[i] = (TileTypes02)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
-        foreach (var item in glossaryItems)
-        {
-           // Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
-        }
     }
+
     void CreateObjectsSet()
     {
         string[] guids;
@@ -103,15 +91,10 @@ public class Glossary : MonoBehaviour {
         objectTypes = new ObjectTypes[size];
         for (int i = 0; i < size; i++)
         {
-          //  Debug.Log("Object: " + AssetDatabase.GUIDToAssetPath(guids[i]));
-
             objectTypes[i] = (ObjectTypes)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
         }
-        foreach (var item in glossaryItems)
-        {
-           // Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
-        }
     }
+
     void CreateUnitsSet()
     {
         string[] guids;
@@ -120,26 +103,17 @@ public class Glossary : MonoBehaviour {
         unitTyps = new UnitTypes[size];
         for (int i = 0; i < size; i++)
         {
-           // Debug.Log("Unit: " + AssetDatabase.GUIDToAssetPath(guids[i]));
-
             unitTyps[i] = (UnitTypes)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[i]), typeof(ScriptableObject));
-        }
-        foreach (var item in glossaryItems)
-        {
-           // Debug.Log(item.paintType + " " + item.tileType + " " + item.objectType + " " + item.unitType);
         }
     }
 
-
     public GlossaryItem GetGlossaryItem(PaintType paint)
     {
-
         foreach (var item in glossaryItems)
         {
             if (item.paintType == paint)
             { return item; }
-        }
-       
+        }    
         return null;
     }
 
@@ -151,7 +125,6 @@ public class Glossary : MonoBehaviour {
             if (typ.tileType == glossary.tileType)
                 return typ.baseTile; 
         }
-
         return null;
     }
 
@@ -163,10 +136,10 @@ public class Glossary : MonoBehaviour {
             if (typ.objectType == glossary.objectType)
                 return typ.baseObject;
         }
-
         return null;
     }
-  public  BaseUnit GetPrefabUnit(PaintType paint)
+
+    public  BaseUnit GetPrefabUnit(PaintType paint)
     {
         GlossaryItem glossary = GetGlossaryItem(paint);
         foreach (var typ in unitTyps)
@@ -174,7 +147,6 @@ public class Glossary : MonoBehaviour {
             if (typ.unitType == glossary.unitType)
                 return typ.baseUnit;
         }
-
         return null;
     }
 }

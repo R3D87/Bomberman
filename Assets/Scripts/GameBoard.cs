@@ -6,20 +6,15 @@ public class GameBoard : MonoBehaviour {
 
     public delegate void ReceivedTranslationAction();
     public  event ReceivedTranslationAction OnReceivedTranslationAction;
-
-
     BaseTile[,] gameBoard;
     int width;
     int height;
+
     private void Awake()
     {
         OnReceivedTranslationAction += InitBoardTile;
     }
 
-    private void Start()
-    {
-      
-    }
     public void ReceiveTranslation(BaseTile[,] baseTilesTable)
     {
         GetSizeArray(baseTilesTable);
@@ -31,6 +26,7 @@ public class GameBoard : MonoBehaviour {
         if (OnReceivedTranslationAction != null)
             OnReceivedTranslationAction();
     }
+
     private void GetSizeArray(BaseTile[,] baseTilesTable)
     {
         width = baseTilesTable.GetLength(0);
@@ -44,15 +40,13 @@ public class GameBoard : MonoBehaviour {
         Coord2d.y = idx % width;
         return Coord2d;
     }
+
     void InitBoardTile()
     {
         for (int i = 0; i < height*width; i++)
         {
             Vector2Int Coord = Convert1Dto2DCoord(i, width);
-            gameBoard[Coord.x, Coord.y].board = this;
-            
-
-
+            gameBoard[Coord.x, Coord.y].board = this;    
         }
     }
 
@@ -60,14 +54,6 @@ public class GameBoard : MonoBehaviour {
     {
         return gameBoard[x, y];
     }
-
-
-
-   
-
-    
-   
-
 }
 
     
