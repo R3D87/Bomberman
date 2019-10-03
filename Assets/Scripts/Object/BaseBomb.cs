@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BaseBomb : BaseObject, IDamage { 
 
-    delegate int SimpleMethod();
-    SimpleMethod[] simpleMethodForHeight;
-    SimpleMethod[] simpleMethodForWidth;
+
     public event Action OnBombExploded;
     public event Action OnBombExplotion;
     public ExplosionEffect effect;
+    int[] Height;
+    int[] Width;
 
     int ExplotionRange = 1;
     int Damage = 1;
@@ -20,20 +20,6 @@ public class BaseBomb : BaseObject, IDamage {
 
     private  bool Quit = false;
 
-    int IncreaseValue()
-    {
-        return  1;
-    }
-
-    int DecreaseValue()
-    {
-        return - 1;
-    }
-
-    int ConstatntValue()
-    {
-        return 0;
-    }
 
     void ReloadScene()
     {
@@ -44,19 +30,8 @@ public class BaseBomb : BaseObject, IDamage {
     {
         UIScript.OnReLoadDuringGame += ReloadScene;
         OnBombExplotion += Explotion;
-        simpleMethodForHeight = new SimpleMethod[4] {
-             new SimpleMethod(ConstatntValue),
-             new SimpleMethod(ConstatntValue),
-             new SimpleMethod(IncreaseValue),
-             new SimpleMethod(DecreaseValue) } ;
-
-        simpleMethodForWidth = new SimpleMethod[4] {
-             new SimpleMethod(DecreaseValue),
-             new SimpleMethod(IncreaseValue),
-             new SimpleMethod(ConstatntValue),
-             new SimpleMethod(ConstatntValue) };
     }
-    void PropateExplotion(int x,int y, int limit,int idx)
+    void PropateExplotion(int x,int y, int limit,int xStep,int yStep)
     {
 
         Debug.Log("X: " + x + " Y: " + y);
@@ -71,12 +46,12 @@ public class BaseBomb : BaseObject, IDamage {
         tileToCheck.AddObjectToTile(SFX);
         
         tileToCheck.GetComponent<IDamage>().TakeDamage(Damage);
-        if (idx == -1)
+        if (xStep == 0 && yStep == 0)
             return;
        
         limit++;
   
-        PropateExplotion(x + simpleMethodForHeight[idx](), y+ simpleMethodForWidth[idx](), limit,idx); 
+        PropateExplotion(x + xStep, y+ yStep, limit,xStep,yStep); 
     }
 
     bool IsCountdownFinished(int detonationTime)
@@ -107,12 +82,11 @@ public class BaseBomb : BaseObject, IDamage {
     void Explotion()
     {     
         int limit = 0;
-      
-        for (int i = 0; i < 4; i++)
-        {
-           PropateExplotion(simpleMethodForHeight[i](), simpleMethodForWidth[i](), limit, i);
-        }
-        PropateExplotion(0, 0, limit, -1);
+        PropateExplotion(0, 0, limit, 0,0);
+        PropateExplotion(0, -1, limit, 0,-1);
+        PropateExplotion(0, 1, limit, 0,-1);
+        PropateExplotion(-1, 0, limit, -1,0);
+        PropateExplotion(1, 0, limit, 1,0);
 
         if (isDebug)
         {
